@@ -1,7 +1,7 @@
 {
   "name": "hotel-beta",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "homepage":"https://malcolmx-dev.github.io/juzr-hotel",
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
