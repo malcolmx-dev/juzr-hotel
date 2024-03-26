@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './clients/pages/App'
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
@@ -21,7 +21,7 @@ import LogOut from './clients/pages/LogOut';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-  
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
   
   <Router>
     <AuthContextProvider>
@@ -44,6 +44,7 @@ root.render(
       </SearchContextProvider>
     </AuthContextProvider>
   </Router>
+  </BrowserRouter>
 
 );
 
