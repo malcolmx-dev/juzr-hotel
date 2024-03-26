@@ -23,7 +23,7 @@ root.render(
 
   <BrowserRouter basename={process.env.PUBLIC_URL}>
   
-  <Router>
+  
     <AuthContextProvider>
       <SearchContextProvider>
       
@@ -43,7 +43,6 @@ root.render(
         
       </SearchContextProvider>
     </AuthContextProvider>
-  </Router>
   </BrowserRouter>
 
 );
