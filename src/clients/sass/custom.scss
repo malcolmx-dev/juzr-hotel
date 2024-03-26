@@ -1,0 +1,37 @@
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+
+
+$position-values: (
+  0: 0,
+  50: 50%,
+  75: 71%,
+  100: 100%
+) !default;
+
+
+
+$spacers: (
+    // The rest of numbers you need to use...
+    0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+    6: ($spacer * 5),
+    7: ($spacer * 6)
+);
+
+
+
+$theme-colors: (
+  "primary": #3A9D23,
+  "secondary":rgb(247, 246, 246),
+  "light": rgba(142, 142, 142, 0.667),
+  "warning": #ffc107,
+  "danger":#dc3545,
+  "white": #fff
+);
+@import "../../../node_modules/bootstrap/scss/bootstrap";
