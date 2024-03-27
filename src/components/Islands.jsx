@@ -12,7 +12,7 @@ import { Placeholder } from 'react-bootstrap';
 
 export default function Islands(){
     var color="rgba(0, 0, 0, 0.5)"
-    const {data, loading, error}=useFetch("http://localhost:3000/api/hotels/countByIsland?islands=Ngazidja,Moheli,Anjouan")
+    const {data, loading, error}=useFetch("https://juzr-hotel-backend.onrender.com/api/hotels/countByIsland?islands=Ngazidja,Moheli,Anjouan")
     return(
         loading? 
         <div className='py-5 bg-secondary '>
