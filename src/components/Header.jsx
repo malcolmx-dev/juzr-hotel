@@ -78,7 +78,7 @@ function Header(){
     return(
         <div>
             
-                <Container fluid className='bg-primary border-bottom pb-5'>
+                <Container fluid className=' w-100 overflow-hidden bg-primary border-bottom pb-5'>
                     
                     <Row>
                     <Navbar expand="md" className="navbar-light " >
@@ -87,7 +87,7 @@ function Header(){
                                 <span className=" bg-white p-1 text-center rounded-3 text-black m-1">Juzr </span> Hotel
                             </Navbar.Brand>
                         </Col>
-                        <Col xs={{ offset: 4}} md={{ offset: 8}}>
+                        <Col xs={{ offset: 5}} md={{ offset: 6}} lg={{ offset: 8}}>
                             {user ? 
                                     <div className='d-flex'>
                                         <p className='text-white fs-4' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}>{user.username}</p>
@@ -105,7 +105,7 @@ function Header(){
                                 
                             <Nav className='basic-navbar-nav'>
                                 
-                                <VscAccount className='d-md-none'  />
+                                <VscAccount as={Link} to={'/login'} className='d-md-none'  />
                                 <Nav.Item className='active'>
                                     <Nav.Link as={Link} className='d-none d-md-block text-white'><Button variant="outline-white">Sign Up </Button></Nav.Link>
                                 </Nav.Item>
