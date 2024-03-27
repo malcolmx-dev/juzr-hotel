@@ -58,36 +58,38 @@ export default function UserComponent(){
             };
   
     return (
-      <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
-        
-          <Form.Group md="4" controlId="username">
-            <Form.Label>Identifiant</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              onChange={handleChange}
-              placeholder="Username"
-              
-            />
-           
-          </Form.Group>
-          <Form.Group  md="4"  controlId="password" className="mt-2">
-            <Form.Label>Mot de passe</Form.Label>
-            <Form.Control
-              required
-              type="password"
-              onChange={handleChange}
-              placeholder="Password"
-              
-            />
-            
-          </Form.Group>
+      <div>
+        <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
           
-        <div className="d-flex flex-column">
-          {error && <span className="text-danger text-center">{error.message}</span>}
-          <Button type="submit" disabled={loading} className="mt-3 text-white">Confirmer</Button>
-        </div>
-        
-      </Form>
+            <Form.Group md="4" controlId="username">
+              <Form.Label>Identifiant</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                onChange={handleChange}
+                placeholder="Username"
+                
+              />
+            
+            </Form.Group>
+            <Form.Group  md="4"  controlId="password" className="mt-2">
+              <Form.Label>Mot de passe</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                onChange={handleChange}
+                placeholder="Password"
+                
+              />
+              
+            </Form.Group>
+            
+          <div className="d-flex flex-column">
+            {error && <span className="text-danger text-center">{error.message}</span>}
+            <Button type="submit" disabled={loading} className="mt-3 text-white">Confirmer</Button>
+          </div>
+          
+        </Form>
+      </div>
     );
 }
