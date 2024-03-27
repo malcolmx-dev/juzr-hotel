@@ -88,7 +88,8 @@ export default function Islands(){
 
           <Col md={{ span: 4}}>
             <Card as={Link} to={"/hotel/Anjouan"} className="bg-dark text-white" >
-                <Card.Img src={CardAnjouan} height='275px'  />
+                <Card.Img className='d-none d-lg-block' src={CardAnjouan} height='275px'  />
+                <Card.Img className='d-lg-none' src={CardAnjouan}  />
                 <Card.ImgOverlay>
                     <div class="position-absolute bottom-0 start-0  w-100 rounded py-lg-1" >
                         <Card.Title className='m-0 p-0 ms-4 fs-2 fw-bold'>Anjouan</Card.Title>

@@ -21,9 +21,14 @@ function App() {
       <Header/>
       <Carousel className='mt-7 pb-4 px-4'>
         <Carousel.Item>
-        <Image src={CarouselSlide1} text="First slide" className=' w-100    object-fit-cover'  width="100%" />
-          <Carousel.Caption>
+        <Image src={CarouselSlide1} text="First slide" className=' w-100 d-inline-block object-fit-cover'  width="100%" />
+          <Carousel.Caption className='d-none d-md-block'>
             <h3>Découvrez les plus beaux hotels de l'archipel des Comores</h3>
+            
+          </Carousel.Caption>
+          <Carousel.Caption className='pt-5 d-md-none h-100 d-flex align-items-center'>
+            <h3>Découvrez les plus beaux hotels de l'archipel des Comores</h3>
+            
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item className=''>
