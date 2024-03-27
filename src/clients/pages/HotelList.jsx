@@ -17,7 +17,7 @@ function HotelList(){
 
     const hotelParams= useParams()
     const island= hotelParams.island
-    const {data, loading, error}=useFetch(`http://localhost:3000/api/hotels?island=${island}`)
+    const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?island=${island}`)
 
    
 

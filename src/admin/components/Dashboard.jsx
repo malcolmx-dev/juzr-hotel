@@ -16,7 +16,7 @@ export default function Dashboard(){
     const hotelId= hotelParams.hotelId
     const navigate= useNavigate()
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:3000/api/hotels/find/${hotelId}`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/find/${hotelId}`)
     
     var newPhotosList = loading? null: data?.photos?.map(element => element)
     const [list, updateList]=  useState([])
@@ -61,7 +61,7 @@ export default function Dashboard(){
         
         
 
-        const res= await fetch(`http://localhost:3000/api/hotels/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},
@@ -87,7 +87,7 @@ export default function Dashboard(){
       
     }
     const handlePhoto= async() => {
-        const res= await fetch(`http://localhost:3000/api/hotels/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},

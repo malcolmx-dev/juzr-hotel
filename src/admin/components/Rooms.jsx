@@ -65,7 +65,7 @@ export default function Rooms(){
     
     const handleClick = async(roomId) => {
         try{
-            const res= await axios.put(`http://localhost:3000/api/rooms/availability/${roomId}`,{
+            const res= await axios.put(`https://juzr-hotel-backend.onrender.com/api/rooms/availability/${roomId}`,{
 
                     dates:allDates
                         
@@ -85,7 +85,7 @@ export default function Rooms(){
         return !isFound
     }
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:3000/api/hotels/rooms/${hotelId}`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/rooms/${hotelId}`)
 
     const handleSubmit = async (event) => {
 
@@ -98,7 +98,7 @@ export default function Rooms(){
 
         try{
   
-        const res= await fetch(`http://localhost:3000/api/rooms/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${hotelId}`,{
             method:'POST',
             credentials:'include',
             headers:{'Content-Type':'application/json'},
@@ -130,7 +130,7 @@ export default function Rooms(){
 
         const res= await axios({
             method: 'put',
-            url: `http://localhost:3000/api/rooms/${roomId}`,
+            url: `https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}`,
             headers:{'Content-Type': 'application/json'}, 
             data: {
                     title: title,
@@ -148,7 +148,7 @@ export default function Rooms(){
     const handleDelete= async(roomId) => {
 
         
-          await fetch(`http://localhost:3000/api/rooms/${roomId}/${hotelId}`,{
+          await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}/${hotelId}`,{
             method:'DELETE',
             credentials:'include',
             headers:{'Content-Type':'application/json'},

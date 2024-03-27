@@ -74,7 +74,7 @@ function Hotel() {
 
     
 
-    const {data, loading, error}= useFetch(`http://localhost:3000/api/hotels/find/${hotelId}`)
+    const {data, loading, error}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/find/${hotelId}`)
     
     
 

@@ -33,7 +33,7 @@ export default function UserComponent(){
         try{
           const res= await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/auth/login',
+            url: 'https://juzr-hotel-backend.onrender.com/api/auth/login',
             headers:{'Content-Type': 'application/json'}, 
             data: {
               username: credidentials.username,

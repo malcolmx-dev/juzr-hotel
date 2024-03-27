@@ -7,7 +7,7 @@ import useFetch from '../clients/features/get';
 import { Placeholder } from 'react-bootstrap';
 
 export default function PropertyList(){
-    const {data, loading, error}=useFetch("http://localhost:3000/api/hotels/countByType")
+    const {data, loading, error}=useFetch("https://juzr-hotel-backend.onrender.com/api/hotels/countByType")
     const image = [
         "https://www.nerienlouper.paris/wp-content/uploads/2018/05/photo-hotel-paris.jpg",
         "https://cf.bstatic.com/xdata/images/hotel/max1024x768/295090917.jpg?k=d17621b71b0eaa0c7a37d8d8d02d33896cef75145f61e7d96d296d88375a7d39&o=&hp=1",

@@ -29,7 +29,7 @@ export default function HotelForm(){
 
         
   
-        const result= await fetch(`http://localhost:3000/api/hotels/${userId}`, {
+        const result= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${userId}`, {
             method:'POST',
             headers:{
                 'Content-Type': 'application/json'

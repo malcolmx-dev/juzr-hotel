@@ -37,7 +37,7 @@ function Header(){
 
     const {user}= useContext(AuthContest)
 
-    const {data, loading, error, refreshData}=useFetch(`http://localhost:3000/api/hotels/search/${destination}`)
+    const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/search/${destination}`)
     
      
 

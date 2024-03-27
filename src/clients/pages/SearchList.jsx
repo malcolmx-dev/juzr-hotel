@@ -38,7 +38,7 @@ function SearchList(){
         }));
     };
 
-    const {data, loading, error, refreshData}=useFetch(`http://localhost:3000/api/hotels?city=${destination}&min=${min||0}&max=${max||60000}`)
+    const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?city=${destination}&min=${min||0}&max=${max||60000}`)
     
     const {dispatch} = useContext(SearchContest)
     
