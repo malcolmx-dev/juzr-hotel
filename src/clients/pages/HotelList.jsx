@@ -84,7 +84,7 @@ function HotelList(){
                         
                             
                             
-                                <Card as={Link} to={`/hotel/${profile._id}`} target="_blank" className='mb-5 shadow w button text-decoration-none' key={index}>
+                                <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
                                     <Card.Img variant="top" src={profile.photos[0]} />
                                     <Card.Body>
                                         <Card.Title>{profile.name}</Card.Title>
