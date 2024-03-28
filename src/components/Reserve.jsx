@@ -94,7 +94,33 @@ export default function Reserve({setOpen, hotelId, days}){
                 <Button onClick={() => handleClick()} className="bg-primary text-white ms-7 fw-bold text-center w-75 mt-5 py-2">Réservez maintenant !</Button>
 
             </Container>
-            
+            <Container  className="bg-white d-md-none w-75 h-75  rounded overflow-auto ">
+                <button className="position-fixed start-75 btn-close" type="button" onClick={() => setOpen(false)}  aria-label="Close"></button>
+                <span className="fs-5 m-2">Choisi ta chambre :</span>
+                <div className="d-flex flex-column mx-3 mt-3">
+                    {data.map((item) =>
+                        <div className="d-flex justify-content-between mt-2 pb-7 border-bottom">
+                            <div className="d-flex flex-column">
+                                <p className="m-0 fw-bold">{item.title}</p>
+                                <p className="m-0 fw-light">{item.desc}</p>
+                                <p className="m-0 fw-bold" style={{"fontSize": "14px"}}>Personnes max: {item.maxPeople}</p>
+                                <p className="m-0"> <span className="fw-bold">{item.price * days}€</span> pour {days} jours </p>
+                            </div>
+                            <div className="d-flex">
+                                {item.roomNumbers.map((roomNumber) => 
+                                    <div className="mx-2 w-50 d-flex flex-column">
+                                        <label className="text-light">{roomNumber.number}</label>
+                                        <div className="w-50 h-25" style={{cursor: "pointer"}} onClick={() => handleError(roomNumber)}><input type="checkbox" value={roomNumber._id} disabled={!isAvailable(roomNumber)}   onChange={handleSelect} /></div>
+                                    </div>
+                                )}
+                            </div>
+                            
+                        </div>
+                    )}
+                </div>
+                <Button onClick={() => handleClick()} className="bg-primary text-white ms-7 fw-bold text-center w-75 mt-5 py-2">Réservez maintenant !</Button>
+
+            </Container>
         </div>
     )
 }
