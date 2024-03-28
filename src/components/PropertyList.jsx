@@ -9,11 +9,10 @@ import { Placeholder } from 'react-bootstrap';
 export default function PropertyList(){
     const {data, loading, error}=useFetch("https://juzr-hotel-backend.onrender.com/api/hotels/countByType")
     const image = [
-        "https://www.nerienlouper.paris/wp-content/uploads/2018/05/photo-hotel-paris.jpg",
-        "https://cf.bstatic.com/xdata/images/hotel/max1024x768/295090917.jpg?k=d17621b71b0eaa0c7a37d8d8d02d33896cef75145f61e7d96d296d88375a7d39&o=&hp=1",
-        "https://previews.123rf.com/images/violin/violin1411/violin141100038/33232552-beach-bungalow-maldives-vacation-background.jpg",
-        "https://www.abritel.fr/guides-voyage/wp-content/uploads/2mmpEhdL5C0AYwcgMQoeUw/f459a8afec33354ed0cb6a0cab8af04d/hotel-1209021.jpg"
-
+        "https://www.momondo.fr/himg/3d/04/8d/ice-105211-67345087_3XL-067376.jpg",
+        "https://cf.bstatic.com/xdata/images/hotel/max1024x768/353470429.jpg?k=ca5a6d8cfb68a3caf5bd51b62fb3efc01911695653153cbee0816bd3f46b0935&o=&hp=1",
+        "https://a0.muscache.com/im/pictures/81dca5d6-5a86-49bc-8eca-4a8610a07d27.jpg",
+        
     ]
     console.log(data)
     return(
@@ -23,7 +22,7 @@ export default function PropertyList(){
         <Row className='gy-5 mt-2'>
             {image.map((img, i)=> (
                 <Col md={{ span: 3}}>
-                    <Card as={Link} to={"/hotel"} className="border-none" >
+                    <Card as={Link} to={"/"} className="border-none" >
                     <Card.Img src={img} className='object-fit-cover' height="200px" width="100%"/>
                     
                     <Placeholder as={Card.Title} className='text-center' animation="glow">
@@ -45,8 +44,8 @@ export default function PropertyList(){
         <h3 className='text-center'>Choisissez en fonction du type</h3>
         <Row className='gy-5 mt-2'>
             {data && image.map((img, i)=> (
-                <Col md={{ span: 3}}>
-                    <Card as={Link} to={"/hotel"} className="border-none" >
+                <Col md={{ span: 4}}>
+                    <Card as={Link} to={data[i]?.type==="Appartement&Maison" ? `/type/Appartement&Maison/warning`:`/type/${data[i]?.type}`} className="border-none" >
                     <Card.Img src={img} className='object-fit-cover' height="200px" width="100%"/>
                     
                     <Card.Title className='text-center'>{data[i]?.type}</Card.Title>

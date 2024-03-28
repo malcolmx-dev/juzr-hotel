@@ -75,7 +75,7 @@ export default function Islands(){
         <h3 className='text-center'>Choisissez quelle sera votre destination</h3>
         <Row className='gy-5 mt-2'>
           <Col md={{ span: 4}}>
-            <Card as={Link} to={"/hotel/Moheli"} className="bg-dark text-white" >
+            <Card as={Link} to={"/island/Moheli"} className="bg-dark text-white" >
                 <Card.Img src={CardMoheli} />
                 <Card.ImgOverlay>
                     <div class="position-absolute bottom-0 start-0  w-100 rounded py-lg-1" >
@@ -87,7 +87,7 @@ export default function Islands(){
           </Col>
 
           <Col md={{ span: 4}}>
-            <Card as={Link} to={"/hotel/Anjouan"} className="bg-dark text-white" >
+            <Card as={Link} to={"/island/Anjouan"} className="bg-dark text-white" >
                 <Card.Img className='d-none d-lg-block' src={CardAnjouan} height='275px'  />
                 <Card.Img className='d-lg-none' src={CardAnjouan}  />
                 <Card.ImgOverlay>
@@ -102,7 +102,7 @@ export default function Islands(){
         
           <Col md={{ span: 4}}>
           
-            <Card as={Link} to={"/hotel/Ngazidja"} className="bg-dark text-white">
+            <Card as={Link} to={"/island/Ngazidja"} className="bg-dark text-white">
                 <Card.Img src={CardComore}/>
                 <Card.ImgOverlay>
                     <div class="position-absolute bottom-0 start-0  w-100 rounded py-lg-1" >

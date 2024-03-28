@@ -13,18 +13,18 @@ import Header from '../../components/Header';
 
 
 
-function HotelList(){
+function HotelListType(){
 
     const hotelParams= useParams()
-    const island= hotelParams.island
-    const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?island=${island}`)
+    const type= hotelParams.type
+    const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?type=${type}`)
 
    
 
     
     return(
         <div>
-            <Header disabled={true}/>
+            <Header disabled={true} />
             <div className='bg-secondary pt-7'>
                 <Container >
                 <Row>
@@ -108,4 +108,4 @@ function HotelList(){
     )
 }
 
-export default HotelList
+export default HotelListType

@@ -23,7 +23,7 @@ import { format } from "date-fns";
 function Hotel() {
     const hotelParams= useParams()
     const hotelId= hotelParams.hotelId
-    const island= hotelParams.island
+
 
     const [date, setDates] = useState([
         {
@@ -64,7 +64,7 @@ function Hotel() {
             console.log(openModal)
 
         }else{
-            navigate("/login")
+            navigate("/signup")
         }
     }
     
@@ -91,10 +91,10 @@ function Hotel() {
 
                         <Row className=" mb-1">
                             <Col sm={{offset:2, span:8}} className="rounded shadow-sm  bg-white p-3">
-                                {island === 'undefined' ?(
-                                <Link to={`/hotels`}  ><BsArrowLeftCircle className="me-2"/>Revenir au choix des hotels</Link>) : (
+                                
+                                <Link to={`/island/${data?.island}`}  ><BsArrowLeftCircle className="me-2"/>Revenir au choix des hotels</Link>
 
-                                <Link to={`/hotel/${island}`}  ><BsArrowLeftCircle className="me-2"/>Revenir au choix des hotels</Link>) }
+                                
                             </Col>
                             
                         </Row>
@@ -107,26 +107,26 @@ function Hotel() {
                             
                             </Col>
 
-                            <Col as={Link} to={`/hotel/${island}/${hotelId}/images`} lg= {4} className="p-0 d-none d-lg-block">
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} lg= {4} className="p-0 d-none d-lg-block">
 
                                 <img src={data?.photos[3]} alt="" className="object-fit-cover  h-100 pt-1 pe-1 "height="175px" width="100%" />
 
                             </Col>
 
-                            <Col as={Link} to={`/hotel/${island}/${hotelId}/images`} lg={2} className="d-flex flex-column p-0 d-none d-lg-block">
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} lg={2} className="d-flex flex-column p-0 d-none d-lg-block">
                             
                             <img src={data?.photos[1]} alt="" className="object-fit-cover my-1  " height="175px" width="100%"/>
                             <img src={data?.photos[0]} alt="" className="object-fit-cover  " height="175px" width="100%"/>
 
                             </Col>
                             
-                            <Col as={Link} to={`/hotel/${island}/${hotelId}/images`} sm={6} lg={2} className="d-flex flex-column p-0   " >
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} sm={6} lg={2} className="d-flex flex-column p-0   " >
 
                             
                             <Carousel className=' d-lg-none'>
                                     {data?.photos.map((hotel, index) =>( 
                                         <Carousel.Item key={index}>
-                                            <Image src={hotel} text="First slide" className='object-fit-cover' height='150px' width="100%"  />
+                                            <Image src={hotel} text="First slide" className='object-fit-cover' height='200px' width="100%"  />
                                         </Carousel.Item>
                                     ))}
                                     
@@ -226,7 +226,7 @@ function Hotel() {
                             
                             </Col>
 
-                            <Col as={Link} to={`/hotel/${island}/${hotelId}/images`} lg= {4} className="ps-3 pb-3 ">
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} lg= {4} className="ps-3 pb-3 ">
 
                                 
                                 <Carousel className='d-none d-lg-block'>

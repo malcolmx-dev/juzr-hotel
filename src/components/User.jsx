@@ -36,8 +36,7 @@ export default function UserComponent(){
             url: 'https://juzr-hotel-backend.onrender.com/api/auth/login',
             headers:{'Content-Type': 'application/json'}, 
             data: {
-              username: credidentials.username,
-              password:credidentials.password // This is the body part
+              email: credidentials.email,
             }
           })
             let expires = new Date()
@@ -61,28 +60,18 @@ export default function UserComponent(){
       <div>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
           
-            <Form.Group md="4" controlId="username">
-              <Form.Label>Identifiant</Form.Label>
+            <Form.Group md="4" controlId="email">
+              <Form.Label>Adresse e-mail</Form.Label>
               <Form.Control
                 required
                 type="text"
                 onChange={handleChange}
-                placeholder="Username"
+                placeholder="E-mail"
                 
               />
             
             </Form.Group>
-            <Form.Group  md="4"  controlId="password" className="mt-2">
-              <Form.Label>Mot de passe</Form.Label>
-              <Form.Control
-                required
-                type="password"
-                onChange={handleChange}
-                placeholder="Password"
-                
-              />
-              
-            </Form.Group>
+            
             
           <div className="d-flex flex-column">
             {error && <span className="text-danger text-center">{error.message}</span>}

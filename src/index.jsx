@@ -16,6 +16,9 @@ import SearchList from './clients/pages/SearchList';
 import { SearchContextProvider} from './clients/utils/SearchContext';
 import { AuthContextProvider } from './clients/utils/AuthContext';
 import LogOut from './clients/pages/LogOut';
+import Signup from './clients/pages/Signup';
+import Hot_App from './components/Hot&App';
+import HotelListType from './clients/pages/HotelListType';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -31,10 +34,13 @@ root.render(
 
           <Route exact path='/' element={<App/>} />
           <Route exact path='/hotels/:destination' element={<SearchList/>} />
-          <Route exact path='/hotel/:island' element={<HotelList/>} />
-          <Route exact path='/hotel/:island/:hotelId' element={<Hotel/>} />
-          <Route exact path='/hotel/:island/:hotelId/images' element={<Images/>} />
+          <Route exact path='/island/:island' element={<HotelList/>} /> 
+          <Route exact path='/hotel/:hotelId' element={<Hotel/>} />
+          <Route exact path='/hotel/:hotelId/images' element={<Images/>} />
+          <Route exact path='/type/:type' element={<HotelListType/>} />
+          <Route exact path='/type/Appartement&Maison/warning' element={<Hot_App/>} />
           <Route exact path='/login' element={<Login/>}/>
+          <Route exact path='/signup' element={<Signup/>}/>
           <Route exact path='/logout' element={<LogOut/>}/>
           <Route exact path='/admin/:userId' element={<CreateHotel/>}/>
           <Route exact path='/admin/:userId/:hotelId' element={<Admin/>}/>

@@ -22,7 +22,7 @@ function Images(){
 
             {loading ? <div></div> :
             <div className="pt-7">
-                <div className="d-flex ms-3 mb-4"><Link to={`/hotel/${island}/${hotelId}`}><button  type="button" className="btn-close me-3" aria-label="Close"></button></Link><p className="fw-bold">{data?.name}</p></div>
+                <div className="d-flex ms-3 mb-4"><Link to={`/hotel/${hotelId}`}><button  type="button" className="btn-close me-3" aria-label="Close"></button></Link><p className="fw-bold">{data?.name}</p></div>
                 <Container>
                 <Row>
 

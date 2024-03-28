@@ -1,6 +1,7 @@
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
+import { FaRegCircleUser } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 import { format } from 'date-fns';
 import { useContext, useState } from 'react';
@@ -17,7 +18,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import useFetch from '../clients/features/get';
 
 
-function Header(){
+function Header(disabled){
     const [destination, setDestination]= useState("")
     const [dates, setDates] = useState([
         {
@@ -71,6 +72,7 @@ function Header(){
         setOpenDestination(false)
         
     }
+    console.log(disabled.disabled)
 
 
    
@@ -87,12 +89,14 @@ function Header(){
                                 <span className=" bg-white p-1 text-center rounded-3 text-black m-1">Juzr </span> Hotel
                             </Navbar.Brand>
                         </Col>
-                        <Col xs={{ offset: 5}} md={{ offset: 6}} lg={{ offset: 8}}>
+                        <Col xs={user ?{ offset: 1}:{offset:5}} md={{ offset: 6}} lg={{ offset: 7}}>
                             {user ? 
-                                    <div className='d-flex'>
-                                        <p className='text-white fs-4' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}>{user.username}</p>
+                                    <div className='d-flex flex-column'>
+                                        <p className='text-black p-1 w-75 d-none d-lg-block shadow border border-3 m-0 mt-1 text-center fw-bold bg-white rounded fs-5' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}><FaRegCircleUser className='mb-1 me-1' /> {user.name} {user.surname}</p>
+                                        <p className='text-black p-1 d-lg-none shadow border border-3 m-0 mt-1 text-center fw-bold bg-white rounded fs-6' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}><FaRegCircleUser className='mb-1 me-1' /> {user.name} {user.surname}</p>
+
                                         {openUser ?
-                                            <div  className='bg-white py-1 ms-3 mt-1 text-center rounded shadow-lg w-50 h-100'>
+                                            <div  className='bg-white py-1  mt-2  text-center rounded shadow-lg w-75 h-100'>
                                                 <Link to={'/logout'} className='text-primary text-decoration-none m-0'><AiOutlineLogout className='mb-1' /> LogOut</Link>
                                             </div>: 
                                             null
@@ -107,7 +111,7 @@ function Header(){
                                 
                                 <Link to={'/login'} className='text-black'><VscAccount className='d-md-none'  /></Link>
                                 <Nav.Item className='active'>
-                                    <Nav.Link as={Link} className='d-none d-md-block text-white'><Button variant="outline-white">Sign Up </Button></Nav.Link>
+                                    <Nav.Link as={Link} to={'/signup'} className='d-none d-md-block text-white'><Button variant="outline-white">Sign Up </Button></Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item className=''>
                                     <Nav.Link as={Link} to={'/login'} className='d-none d-md-block text-white'><Button variant="outline-white">Login </Button></Nav.Link>
@@ -116,7 +120,7 @@ function Header(){
                         </Col>
                     </Navbar>
                     </Row>
-                    <div className='d-none d-md-block'>
+                    {disabled.disabled ? null : <div className='d-none d-md-block'>
                         <Row className=' d-flex bg-white text-light w-75 mt-4 p-2 text-center align-items-center border border-warning border-3 z-1 position-absolute top-15 start-50 translate-middle-x'>
                             
                             <Col md={3} className='border-end border-warning border-3'>
@@ -186,9 +190,9 @@ function Header(){
                             
                             </Col>
                         </Row>
-                    </div>
+                    </div>}
                     
-                    {openSearch ?
+                    {openSearch&&!disabled.disabled ?
                     <div className='d-md-none d-flex justify-content-center mb-7'>
                     <Button className="btn-close border border-black rounded-circle z-2" 
                             style={{position: 'absolute', left:"40px", top:"88px"}} variant='outline-white'
@@ -263,8 +267,8 @@ function Header(){
                             
                             </Col>
                         </Row>
-                    </div>: 
-                    <div className=' d-flex justify-content-center text-light ms-4 mt-4 w-75 align-items-center position-absolute '>
+                    </div>: !disabled.disabled&&
+                    <div className='d-md-none d-flex justify-content-center text-light ms-4 mt-4 w-75 align-items-center position-absolute '>
                         <Button className='border border-black mt-1 bg-white rounded-circle' variant='outline-black' onClick={()=> setOpenSearch(true)}> <IoIosArrowDown /> </Button>
                     </div>
 }  
