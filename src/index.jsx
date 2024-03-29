@@ -25,6 +25,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
   <BrowserRouter basename={process.env.REACT_APP_URI}>
+    
   
   
     <AuthContextProvider>
