@@ -2,10 +2,12 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import UserComponent from "../../components/User";
 import Header from "../../components/Header";
 
+
+import Cookies from 'universal-cookie';
+
 import { useContext, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContest } from "../utils/AuthContext";
 import axios from "axios";
 
 
@@ -13,16 +15,17 @@ import axios from "axios";
 
 
 
-export default function Login() {
+export default function LoginAdmin() {
     const [validated, setValidated] = useState(false);
     const [cookie, setCookie]= useCookies()
+    const [error, setError] = useState("")
     const navigate= useNavigate()
+    const cookies = new Cookies();
     const [credidentials, setCredidentials] = useState({
       username: undefined,
       password: undefined
     })
 
-    const {loading, error, dispatch}= useContext(AuthContest)
 
     const handleChange = (e) => {
       setCredidentials((prev) =>({ ...prev, [e.target.id]: e.target.value }) )
@@ -34,25 +37,33 @@ export default function Login() {
        
     
         event.preventDefault();
-        dispatch({type: "LOGIN_START"})
+        
         try{
           const res= await axios({
             method: 'post',
-            url: 'https://juzr-hotel-backend.onrender.com/api/auth/login',
+            url: 'https://juzr-hotel-backend.onrender.com/api/authAdmin/login',
             headers:{'Content-Type': 'application/json'}, 
             data: {
-              email: credidentials.email,
+              username: credidentials.username,
+              password: credidentials.password,
+
             }
           })
             let expires = new Date()
             expires.setTime(expires.getTime() + (3600*1000))
-            setCookie('access_token', res?.data.access_token, { path: '/',  expires})
+            cookies.set('access_token', res?.data.access_token, { path: '/',  expires});
+
         
 
-          dispatch({type: "LOGIN_SUCCES", payload: res.data})
-          navigate("/")
+        if(res.data.hotelId){
+            navigate(`/admin/${res.data._id}/${res.data.hotelId}`)
+            
+        }
+        navigate(`/admin/${res.data._id}`)
+        
         }catch(err){
-          dispatch({type: "LOGIN_ERROR", payload: err.response.data})
+          console.log(err)
+          setError(err.response.data)
         }
         
 
@@ -66,16 +77,27 @@ export default function Login() {
                     
                         <h1 className=' text-uppercase text-dark fw-bold text-center mt-2'><span className=" bg-primary p-1 text-center rounded-3 text-white m-1">Juzr </span> Hotel</h1>
                         <div className="bg-white d-none d-lg-block p-2 rounded-4 mt-5 w-25 border">
-                            <p className="fs-4 fw-bold text-center">Connectez-vous pour vous enregistrer sur notre site et réserver !</p>
+                            
                             <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
         
-                                <Form.Group md="4" controlId="email">
-                                <Form.Label>Adresse e-mail</Form.Label>
+                                <Form.Group md="4" controlId="username">
+                                <Form.Label>Username</Form.Label>
                                 <Form.Control
                                     required
                                     type="text"
                                     onChange={handleChange}
-                                    placeholder="E-mail"
+                                    placeholder="Username"
+                                    
+                                />
+                                
+                                </Form.Group>
+                                <Form.Group md="4" controlId="password">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="password"
+                                    onChange={handleChange}
+                                    placeholder="Password"
                                     
                                 />
                                 
@@ -84,35 +106,13 @@ export default function Login() {
                                 
                                 <div className="d-flex flex-column">
                                     {error && <span className="text-danger text-center">{error.message}</span>}
-                                    <Button type="submit" disabled={loading} className="mt-3 text-white">Confirmer</Button>
+                                    <Button type="submit"  className="mt-3 text-white">Confirmer</Button>
                                 </div>
                             
                             </Form>
                         </div>
-                        <div className="bg-white d-lg-none rounded-4 mt-5 border">
-                        <p className="fs-4 fw-bold text-center">Connectez-vous pour vous enregistrer sur notre site et réserver !</p>
-                            <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
-        
-                                <Form.Group md="4" controlId="email">
-                                <Form.Label>Adresse e-mail</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    onChange={handleChange}
-                                    placeholder="E-mail"
-                                    
-                                />
-                                
-                                </Form.Group>
-                                
-                                
-                                <div className="d-flex flex-column">
-                                    {error && <span className="text-danger text-center">{error.message}</span>}
-                                    <Button type="submit" disabled={loading} className="mt-3 text-white">Confirmer</Button>
-                                </div>
-                            
-                            </Form>
-                        </div>
+                        
+                        
         
 
                     

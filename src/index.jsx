@@ -19,6 +19,7 @@ import LogOut from './clients/pages/LogOut';
 import Signup from './clients/pages/Signup';
 import Hot_App from './components/Hot&App';
 import HotelListType from './clients/pages/HotelListType';
+import LoginAdmin from './admin/pages/LoginAdmin';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -41,6 +42,7 @@ root.render(
           <Route exact path='/type/:type' element={<HotelListType/>} />
           <Route exact path='/type/Appartement&Maison/warning' element={<Hot_App/>} />
           <Route exact path='/login' element={<Login/>}/>
+          <Route exact path='/admin' element={<LoginAdmin/>}/>
           <Route exact path='/signup' element={<Signup/>}/>
           <Route exact path='/logout' element={<LogOut/>}/>
           <Route exact path='/admin/:userId' element={<CreateHotel/>}/>

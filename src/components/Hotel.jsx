@@ -1,9 +1,13 @@
 import {  Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from 'universal-cookie';
+
 
 export default function HotelForm(){
     const navigate= useNavigate()
     const userParams= useParams()
+    const cookies = new Cookies();
+
     const userId= userParams.userId
 
     const stringToSplit= (string, separator) => {
@@ -46,10 +50,16 @@ export default function HotelForm(){
             }),
         }).then((res)=>res.json()) 
         console.log(result)
+        console.log(cookies.get('access_token')); 
+
+
+        
               
-        if(result._id){
-            navigate(`/admin/${userId}/${result._id}`)
-        }
+        
+            if(result._id){
+                navigate(`/admin/${userId}/${result._id}`)
+            }
+        
   
         
        
