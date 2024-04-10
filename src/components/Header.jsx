@@ -3,8 +3,9 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import { FaRegCircleUser } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
+import { MdOutlineHotel } from "react-icons/md";
 import { format } from 'date-fns';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { VscAccount, Vsc } from "react-icons/vsc";
 import { FaBed, FaCalendarAlt } from "react-icons/fa";
 import { MdMan } from "react-icons/md";
@@ -16,6 +17,7 @@ import { AuthContest } from '../clients/utils/AuthContext';
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineLogout } from 'react-icons/ai';
 import useFetch from '../clients/features/get';
+import axios from 'axios';
 
 
 function Header(disabled){
@@ -32,13 +34,34 @@ function Header(disabled){
         children:2,
         room:1
       })
+
+    const [data2, setData2]= useState({})
     const [openDestination, setOpenDestination]= useState(false)
     const [openSearch, setOpenSearch]= useState(false)
     const [openUser, setOpenUser]= useState(false)
 
     const {user}= useContext(AuthContest)
+    useEffect(() => {
+        const fetchData = async () => {
+          
+          
+            try{
+              const res= await axios.get(`http://localhost:10000/api/search/hotel/${destination}`)
+              setData2(res.data)
+              
+            }catch(err){
+                
+            }
+            
+            
+          }
+          fetchData()
+      }, [destination])
 
-    const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/search/${destination}`)
+    const {data, loading, error, refreshData}=useFetch(`http://localhost:10000/api/search/${destination}`)
+    
+    console.log(data2)
+
     
      
 
@@ -277,20 +300,42 @@ function Header(disabled){
                     
             
                 </Container>
-                {openDestination && data ? 
+                
+                            {openDestination && (data ||data2[0]) ? 
                                 <div>
                                     <div className='d-none d-md-block bg-white shadow-lg py-2 w-25 border border-2 z-2' style={{position: 'absolute', left:"190px", top:"145px"}}>
                                         {data.map((item) => 
                                         <div className='d-flex mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
                                             <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>
-                                            <div className='d-flex flex-column justify-content-center'>
+                                            {item.name ? <div className='d-flex flex-column justify-content-center'>
+                                                
+                                                <p className='fw-bold m-0'>{item.name}</p>
+                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                            </div>: <div className='d-flex flex-column justify-content-center'>
                                                 
                                                 <p className='fw-bold m-0'>{item.city}</p>
                                                 <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
-                                            </div>
+                                            </div>}
                                         </div>
                                         
                                         )}
+                                        {data2[0] && data2.map((item) => 
+                                        <div className='d-flex mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
+                                            <span className='h-100 m-2 '><MdOutlineHotel className='fs-3' /></span>
+                                            {item.name ? <div className='d-flex flex-column justify-content-center'>
+                                                
+                                                <p className='fw-bold m-0'>{item.name}</p>
+                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                            </div>: <div className='d-flex flex-column justify-content-center'>
+                                                
+                                                <p className='fw-bold m-0'>{item.city}</p>
+                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                            </div>}
+                                        </div>
+                                        
+                                        )}
+                                        
+                                        
                                     </div>
                                     <div className='bg-white d-md-none shadow-lg pb-2 w-50 border border-2 z-2' style={{position: 'absolute', left:"50px", top:"145px"}}>
                                     {data.map((item) => 
@@ -307,6 +352,7 @@ function Header(disabled){
                                 </div>
                             </div>
                             : null}
+                            
             
             
         </div>

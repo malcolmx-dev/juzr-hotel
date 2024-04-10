@@ -23,12 +23,12 @@ export default function Hot_App() {
                         <div className="bg-white shadow-sm p-2 d-none d-lg-block rounded-4 mt-5 w-25 p-3 border">
                             <p className="m-0 text-light fs-5"> <CgDanger /> Ces maisons/appartements ne sont uniquement disponibles pour une courte durée <br />
                                                           Une fois le séjour fini le lieu devra être en bonne état</p>
-                            <Link to={"/type/Appartement&Maison"} className=" fs-5  text-decoration-none text-end">Continuer <AiOutlineRight className="me-4" /> </Link>
+                            <Link to={"/type/AppartementMaison"} className=" fs-5  text-decoration-none text-end">Continuer <AiOutlineRight className="me-4" /> </Link>
                         </div>
                         <div className="bg-white shadow-sm p-2 d-lg-none rounded-4 mt-5  p-3 border">
                             <p className="m-0 text-light fs-5"> <CgDanger /> Ces maisons/appartements ne sont uniquement disponibles pour une courte durée <br />
                                                           Une fois le séjour fini le lieu devra être en bonne état</p>
-                            <Link to={"/type/Appartement&Maison"} className=" fs-5  text-decoration-none text-end">Continuer <AiOutlineRight className="me-4" /> </Link>
+                            <Link to={"/type/AppartementMaison"} className=" fs-5  text-decoration-none text-end">Continuer <AiOutlineRight className="me-4" /> </Link>
                         </div>
         
 

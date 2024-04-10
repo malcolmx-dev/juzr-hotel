@@ -18,6 +18,7 @@ export default function Rooms(){
     const [openCreateRoom, setOpenCreateRoom] = useState(false)
     const [dupliacte, setDuplicate] = useState(false)
     const [dupliacte2, setDuplicate2] = useState(false)
+    const [roomNumberIndex, setRoomNumberIndex]= useState("")
     const [searchTerm, setSearchTerm] = useState([])
        
         const updateSearch = (e, index) => {
@@ -63,29 +64,58 @@ export default function Rooms(){
     
     const allDates= getDateInRange(date[0].startDate, date[0].endDate)
     
+    console.log(allDates)
+    
     const handleClick = async(roomId) => {
         try{
-            const res= await axios.put(`https://juzr-hotel-backend.onrender.com/api/rooms/availability/${roomId}`,{
-
+            const res= await axios({
+                method: 'put',
+                url: `http://localhost:10000/api/rooms/availability/${roomId}`,
+                data:{
                     dates:allDates
-                        
-                    })
+                }
+              })
+                    setOpenChangevalue(false)
+                    refreshData()
             return res.data
         }catch(err){
             console.log(error)
         }
+        
+
+    }
+    const deleteRoomStatus= async(roomId, dates) => {
+        try{
+            const res= await axios({
+                        method: 'delete',
+                        withCredentials:true,
+                        url: `http://localhost:10000/api/rooms/availability/delete/${roomId}`,
+                        data:{
+                            dates:dates
+                        }
+                      })
+            setOpenChangevalue(false)
+            refreshData()
+            return res.data
+        }catch(err){
+            console.log(error)
+        }
+        
+
     }
 
     const isAvailable= (roomNumber) => {
+        const isFound=roomNumber.unavailableDates.some((element, index)=>
         
-        const isFound = roomNumber.unavailableDates.some((date) => 
-            allDates.includes(new Date(date).getTime()),  
+        element.some((date) => 
+            allDates.includes(new Date(date).getTime())  
+            
         )
-        
+    )
         return !isFound
     }
 
-    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/rooms/${hotelId}`)
+    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/hotels/rooms/${hotelId}`)
 
     const handleSubmit = async (event) => {
 
@@ -98,7 +128,7 @@ export default function Rooms(){
 
         try{
   
-        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${hotelId}`,{
+        const res= await fetch(`http://localhost:10000/api/rooms/${hotelId}`,{
             method:'POST',
             credentials:'include',
             headers:{'Content-Type':'application/json'},
@@ -130,7 +160,7 @@ export default function Rooms(){
 
         const res= await axios({
             method: 'put',
-            url: `https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}`,
+            url: `http://localhost:10000/api/rooms/${roomId}`,
             headers:{'Content-Type': 'application/json'}, 
             data: {
                     title: title,
@@ -148,7 +178,7 @@ export default function Rooms(){
     const handleDelete= async(roomId) => {
 
         
-          await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}/${hotelId}`,{
+          await fetch(`http://localhost:10000/api/rooms/${roomId}/${hotelId}`,{
             method:'DELETE',
             credentials:'include',
             headers:{'Content-Type':'application/json'},
@@ -161,6 +191,7 @@ export default function Rooms(){
         
                 
     }
+    
     
 
     
@@ -310,7 +341,7 @@ export default function Rooms(){
                                     
                                         
                                     isAvailable(roomNumber) ?
-                                    <div className="rounded p-3 d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
+                                    <div className="rounded p-3 d-flex flex-column justify-content-between align-items-center bg-primary bg-opacity-25 w-75  ms-5 mt-1">
                                      <Dropdown >
                                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
                                             <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
@@ -329,13 +360,39 @@ export default function Rooms(){
                                     </Dropdown>
                                     <p className="fw-bold fs-3 text-center text-black mt-2 mb-3 text-white">{roomNumber.number}</p> 
                                      
-                                    <Button className=' bg-primary text-center text-white w-75 ms-4 m-2 ' onClick={()=> handleClick(roomNumber._id)}  >Réservez!</Button>
+                                    <Button className=' bg-primary text-center text-white w-75  m-2 ' onClick={()=> handleClick(roomNumber._id)}  >Réservez!</Button>
+                                    { roomNumber.unavailableDates.map((element)=>
+                                    <div className=" text-center mb-4 px-3 m-0 border border-white bg-white mt-5 border-4"> Réservée du <span className="fw-bold">{format(element[0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[element.length-1], 'dd/MM/yyyy')}</span>
+                                     <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Annuler la réservation</Button>
+                                     </div>
+                                    )}
                                 </div>:
-                                <div className="rounded p-3 d-flex flex-column justify-content-between bg-danger bg-opacity-25 w-75  ms-5 mt-1">
+                                <div className="rounded p-3 d-flex flex-column justify-content-between align-items-center bg-danger bg-opacity-25 w-75  ms-5 mt-1">
                                      
-                                    <p className="fw-bold fs-3 text-center text-black mt-2 mb-3 text-white">{roomNumber.number}</p>
-                                    <p className=" text-center mb-2 px-3 m-0"> Réservée du <span className="fw-bold">{format(roomNumber.unavailableDates[0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(roomNumber.unavailableDates[roomNumber.unavailableDates.length-1], 'dd/MM/yyyy')}</span> </p>
- 
+                                     <Dropdown >
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
+                                            <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu >
+                                            
+                                                <DateRange
+                                                    editableDateInputs={true}
+                                                    onChange={item => setDates([item.selection])}
+                                                    moveRangeOnFirstSelection={true}
+                                                    ranges={date}
+                                                    
+                                                    
+                                                />
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <p className="fw-bold fs-3 text-center text-black mt-2 mb-3 text-white">{roomNumber.number}</p> 
+                                     
+                                    <Button className=' bg-primary text-center text-white w-75 mb-5 m-2 ' onClick={()=> handleClick(roomNumber._id)}  >Réservez!</Button>
+                                   { roomNumber.unavailableDates.map((element)=>
+                                    <div className=" text-center mb-4 px-3 m-0 border border-white bg-white border-4"> Réservée du <span className="fw-bold">{format(element[0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[element.length-1], 'dd/MM/yyyy')}</span>
+                                     <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Annuler la réservation</Button>
+                                     </div>
+                                    )}
                                      
                                     
                                 </div>

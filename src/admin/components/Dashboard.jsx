@@ -12,28 +12,62 @@ export default function Dashboard(){
     const hotelParams= useParams()
     const [openChangedefaultValue, setOpenChangedefaultValue] = useState(false)
     const [openCreatePhoto, setOpenCreatePhoto] = useState(false)
+    const [openCreateEquipments, setOpenCreateEquipments] = useState(false)
     const [changePhoto, setChangePhoto] = useState(false)
+    const [changeEquipments, setChangeEquipments] = useState(false)
+
     const hotelId= hotelParams.hotelId
     const navigate= useNavigate()
 
     const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/find/${hotelId}`)
     
-    var newPhotosList = loading? null: data?.photos?.map(element => element)
-    const [list, updateList]=  useState([])
+    var newPhotosListPhotos = loading? null: data?.photos?.map(element => element)
+
+    const [listPhotos, updateListPhotos]=  useState([])
+    const [equipments, setEquipment]=  useState({
+        bathroom:[],
+        vue:[],
+        outside:[],
+        bedroom:[],
+        activities:[],
+        reception:[],
+        restaurant:[],
+        security:[],
+        general:[],
+        health:[],
+        internet:false,
+        parking:false
+    })
+
 
     useEffect(() => {
-        updateList(newPhotosList);
+        updateListPhotos(newPhotosListPhotos);
      }, [loading]);
 
-     useEffect(() => {
+    useEffect(() => {
+        setEquipment(data);
+        console.log(equipments)
+     }, [loading]);
+
+    useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-          console.log(list)
+          console.log(listPhotos)
           changePhoto&& handlePhoto()
           // Send Axios request here
         }, 3000)
     
         return () => clearTimeout(delayDebounceFn)
       }, [changePhoto])
+
+      useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+          console.log(equipments)
+          changeEquipments&& handleEquipments()
+          // Send Axios request here
+        }, 3000)
+    
+        return () => clearTimeout(delayDebounceFn)
+      }, [changeEquipments])
      
     
     var newArrayPhotos
@@ -41,12 +75,21 @@ export default function Dashboard(){
         newArrayPhotos=  string.split(separator)
         
     }
+    const equipmentToSplit= (string, separator, id) => {
+        const newArray=  string.split(separator)
+        setEquipment(prevState => ({...prevState, [id]: newArray}))
+        
+    }
+    const setCheckedEquipment= (e, id)=> {
+        const checked= e.target.checked
+        setEquipment(checked?prevState => ({...prevState, [id]: true}): prevState => ({...prevState, [id]: false}) )
+    }
 
     
     
 
     const handleChangeColor= (i) => {
-        updateList(list.filter((value, index) => index!==i))
+        updateListPhotos(listPhotos.filter((value, index) => index!==i))
         
 
     }
@@ -61,7 +104,7 @@ export default function Dashboard(){
         
         
 
-        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
+        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},
@@ -71,7 +114,8 @@ export default function Dashboard(){
                         type: type, 
                         adress:adress,
                         desc: desc,
-                        photos: list
+                        photos: listPhotos,
+                        equipments: equipments
                         })
                       }).then(response => {
                             if(response.status===401){
@@ -87,31 +131,47 @@ export default function Dashboard(){
       
     }
     const handlePhoto= async() => {
-        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
+        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({
                         
-                        photos: list
+                        photos: listPhotos
                         })
                       }).then(response => {
                         if(response.status===401){
                             alert("Vous n'êtes pas autorisé! Reconnectez-vous")
-                            navigate("/login")
+                            navigate("/admin")
                         }else{
                             refreshData()
                             setOpenChangedefaultValue(false)
                             setOpenCreatePhoto(false)
                             setChangePhoto(false)
                         }
-                    })
-        
-        
-        
-        
-        
-      
+                    })     
+    }
+    const handleEquipments= async() => {
+        console.log(equipments)
+        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
+                    method:'PUT',
+                    credentials:'include',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({
+                        
+                        equipments: equipments
+                        })
+                      }).then(response => {
+                        if(response.status===401){
+                            alert("Vous n'êtes pas autorisé! Reconnectez-vous")
+                            navigate("/admin")
+                        }else{
+                            refreshData()
+                            setOpenChangedefaultValue(false)
+                            setOpenCreateEquipments(false)
+                            setChangeEquipments(false)
+                        }
+                    })     
     }
 
     return(
@@ -187,16 +247,17 @@ export default function Dashboard(){
                                             
                                         </div>
                                         <div className="d-flex justify-content-between w-100">
-                                                            <Button className="bg-danger text-white fw-bold me-1 w-50 mt-5" onClick={() =>setOpenCreatePhoto(false)}>Annuler</Button>
-                                                            <Button className="bg-primary text-white fw-bold w-50 ms-1 mt-5" onClick={() => {newArrayPhotos.forEach((element) => updateList(oldArray => [...oldArray, element])); changePhoto===true ?setChangePhoto(false):setChangePhoto(true)}} >Valider</Button>
-                                                        </div>
+                                            <Button className="bg-danger text-white fw-bold me-1 w-50 mt-5" onClick={() =>setOpenCreatePhoto(false)}>Annuler</Button>
+                                            <Button className="bg-primary text-white fw-bold w-50 ms-1 mt-5" onClick={() => {newArrayPhotos.forEach((element) => updateListPhotos(oldArray => [...oldArray, element])); changePhoto===true ?setChangePhoto(false):setChangePhoto(true)}} >Valider</Button>
+                                        </div>
                         
                                     </Container>
                                     </div> }
-                                <div className="d-flex flex-column align-items-center" id="photosList">
+                                    
+                                <div className="d-flex flex-column align-items-center" id="photosListPhotos">
                                     
                                 
-                                    {list?.map((images, index)=>
+                                    {listPhotos?.map((images, index)=>
                                         
                                         <div className="order-2 m-0 w-100 fw-bold rounded-4 my-2 bg-white p-2 border shadow-sm" id={index}>
                                             <Button 
@@ -211,8 +272,91 @@ export default function Dashboard(){
                                     )}
                                     
                                 </div>
+                                <div className="d-flex">
+                                    <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Equipements</p>
+                                    <p className="m-0 mt-3 ms-2 text-primary p-1 bg-white shadow-sm h-75 rounded-pill" onClick={()=> setOpenCreateEquipments(true)}  style={{fontSize:"14px", cursor:"pointer"}}>+ Ajouter des équipements</p>
+                                </div>
+                                {openCreateEquipments&&
+                                    <div className=" position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center z-2" style={{"backgroundColor":"rgba(0, 0, 0, 0.418)"}}>
+                                    <Container  className="bg-white d-none d-md-block w-50 h-75 p-2 rounded overflow-auto ">
+                                        <button className="position-fixed start-75 btn-close" type="button" onClick={()=> {setOpenCreateEquipments(false)} }  aria-label="Close"></button>
+                                        <span className="fs-5 fw-bold text-primary m-2">Ajouter des équipments</span>
+                                        <div className="d-flex flex-column mx-3 mt-3">
+                                            
+                                                <div className="d-flex flex-column mx-5  pb-6 border-bottom">
+                                                    
+                                                    <div className="d-flex justify-content-between">
+                                                        
+                                                        <Row>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Salle de bains</p>
+                                                                <input type="text"  onChange={e => equipmentToSplit(e.target.value, ",", 'bathroom')} />
+                                                                
+                                                                <p className="fw-bold fs-5">Vue</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "vue")} />
+
+                                                                <p className="fw-bold fs-5">En extérieur</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",","outside")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Équipements en chambre</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "bedroom")} />
+                                                                
+                                                                
+                                                                
+                                                            </Col>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Activités</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "activities")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Réception</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "reception")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Restauration</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "restaurant")} />
+
+                                                                <p className="fw-bold fs-5">Internet</p>
+                                                                <div className="d-flex">
+                                                                    <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "internet")} />
+                                                                    <label className="form-check-label" for="flexCheckIndeterminate">
+                                                                    Internet
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                                
+                                                            </Col>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Sécurité</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "security")} />
+                                                                <p className="fw-bold fs-5">Général</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "general")} />
+                                                                <p className="fw-bold fs-5">Bien-être</p>
+                                                                <input type="text" onChange={e => equipmentToSplit(e.target.value, ",", "health")} />
+                                                                <p className="fw-bold fs-5">Parking</p>
+                                                                <div className="d-flex">
+                                                                    <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "parking")} />
+                                                                    <label className="form-check-label" for="flexCheckIndeterminate">
+                                                                    Parking
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                                
+                                                            </Col>
+                                                        </Row>
+                                                        
+                                                        
+                                                    </div>       
+                                                </div>
+                                            
+                                        </div>
+                                        <div className="d-flex justify-content-between w-100">
+                                            <Button className="bg-danger text-white fw-bold me-1 w-50 mt-5" onClick={() =>setOpenCreateEquipments(false)}>Annuler</Button>
+                                            <Button className="bg-primary text-white fw-bold w-50 ms-1 mt-5" onClick={() => {changeEquipments===true ?setChangeEquipments(false):setChangeEquipments(true)}} >Valider</Button>
+                                        </div>
+                        
+                                    </Container>
+                                    </div> }
                                 <div className="d-flex justify-content-between w-100">
-                                        <Button className="bg-danger text-white fw-bold me-1 w-50 mt-5" onClick={() =>setOpenChangedefaultValue(false)}>Annuler</Button>
+                                        <Button className="bg-danger text-white fw-bold me-1 w-50 mt-5" onClick={() =>{setOpenChangedefaultValue(false); updateListPhotos(newPhotosListPhotos)}}>Annuler</Button>
                                         <Button className="bg-primary text-white fw-bold w-50 ms-1 mt-5" onClick={() => handleSearch()}>Valider</Button>
                                 </div>
                         </Card.Text>
@@ -249,9 +393,17 @@ export default function Dashboard(){
                                         <p className="m-0 fw-bold rounded-5 my-2 bg-white p-2 border shadow-sm">{images}</p>
                                     )}
                                 </div>
+                                
+                                <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Equipements</p>
+                                {data?.equipments ? <div className="d-flex flex-column">
+                                    {data?.equipments.map((images)=>
+                                        <p className="m-0 fw-bold rounded-5 my-2 bg-white p-2 border shadow-sm">{images}</p>
+                                    )}
+                                </div> : <p className="m-0 fw-bold rounded-5 my-2 bg-white p-2 text-center border shadow-sm">Aucun equipements</p>}
                         </Card.Text>
                     </Card.Body>
                 </Card>
+                
 
     )
 }

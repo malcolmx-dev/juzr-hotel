@@ -48,10 +48,12 @@ export default function Reserve({setOpen, hotelId, days}){
         try{
             await Promise.all(
                 selectedRoom.map((roomId) => {
-                    const res= axios.put(`https://juzr-hotel-backend.onrender.com/api/rooms/availability/${roomId}`,{
-
-                        dates:allDates
-                        
+                    const res= axios({
+                        method: 'put',
+                        url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/${roomId}`,
+                        data:{
+                            dates:allDates
+                        }
                       })
                     return res.data
                 })

@@ -43,6 +43,7 @@ function Hotel() {
         return diffDays
     }
     const days =dates ? dayDifference(dates[0]?.endDate, dates[0]?.startDate): undefined
+    console.log(date[0].startDate-date[0].endDate)
     const [openModal, setOpenModal]= useState(false)
     
 
@@ -51,7 +52,7 @@ function Hotel() {
     const {dispatch} = useContext(SearchContest)
 
     const handleClick= () => {
-        if(!dates){
+        if(date[0].startDate-date[0].endDate !==0){
             dates= date
         
         
@@ -180,7 +181,7 @@ function Hotel() {
                                     <div className="d-flex"><AiFillStar /></div>
                                     <div className="d-flex align-items-center mt-3"><Badge className=" border m-0">{data?.note}</Badge><p className="mb-0 ms-2 fw-bold fs-5">{data?.note > 8 ? "Merveilleux" : null} </p> </div>
                                     <Link>Afficher l'integralité des avis <AiOutlineRight className="h-50"/></Link>
-                                    <p className="mt-4 fw-bold fs-5" > Equipement populaires </p>
+                                    <p className="mt-4" > {data?.desc} </p>
                                     <ul className="list-unstyled d-flex">
                                         
 
@@ -195,7 +196,6 @@ function Hotel() {
                                     
                                     <Link><img  src={data?.photos[5]} alt="" className="ratio ratio-16x9 ms-sm-2 rounded mt-2 "/></Link>
                                     <p className="ms-2 m-0 mb-4 fw-light text-black">{data.adress}, {data.city}</p>
-                                    <Link className="ms-2">Afficher la carte <AiOutlineRight className="h-50"/></Link>
 
                                
 

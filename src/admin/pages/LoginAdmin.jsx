@@ -55,11 +55,11 @@ export default function LoginAdmin() {
 
         
 
-        if(res.data.hotelId){
+        if(res.data.hotelId !== null){
             navigate(`/admin/${res.data._id}/${res.data.hotelId}`)
             
-        }
-        navigate(`/admin/${res.data._id}`)
+        }else{
+          navigate(`/admin/${res.data._id}`)}
         
         }catch(err){
           console.log(err)
