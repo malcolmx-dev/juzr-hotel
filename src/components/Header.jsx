@@ -43,17 +43,12 @@ function Header(disabled){
     const {user}= useContext(AuthContest)
     useEffect(() => {
         const fetchData = async () => {
-          
-          
             try{
               const res= await axios.get(`http://localhost:10000/api/search/hotel/${destination}`)
-              setData2(res.data)
-              
+              setData2(res.data)  
             }catch(err){
-                
+                console.log(err)
             }
-            
-            
           }
           fetchData()
       }, [destination])
@@ -95,7 +90,6 @@ function Header(disabled){
         setOpenDestination(false)
         
     }
-    console.log(disabled.disabled)
 
 
    
@@ -169,10 +163,10 @@ function Header(disabled){
                             </Col>
                             <Col md={4} className='border-end border-warning border-3' >
                             <Dropdown>
-                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                    <Dropdown.Toggle variant="success" >
                                         <MdMan className='me-1 mb-1' />{`${options.adult} adultes · ${options.children} enfants · ${options.room} chambre`}
                                     </Dropdown.Toggle>
-                                        <Dropdown.Menu className='w-100 p-3 mt-1 shadow-sm'>
+                                        <Dropdown.Menu className='w-100 p-3 mt-1 shadow-sm' aria-labelledby='1Y' >
 
                                             <Container className=''>
                                             <div className='d-flex justify-content-between mb-2'>
@@ -199,10 +193,7 @@ function Header(disabled){
                                                     <Button className='border-0 ms-1 mb-1 text-center text-primary bg-white rounded-0 h-100' onClick={()=> handleOptions("room", "i")}>+</Button>
                                                 </div>
                                             </div> 
-                                            <div>
-                                                <Button className='w-100  mt-3' variant="outline-primary">Terminer</Button>
-                                                
-                                            </div>    
+                                               
                                             </Container>                                       
                                         </Dropdown.Menu>
                                 </Dropdown>
@@ -276,10 +267,7 @@ function Header(disabled){
                                                     <Button className='border-0 p-1 ms-1 mb-1 text-center text-primary bg-white rounded-0 h-100' onClick={()=> handleOptions("room", "i")}>+</Button>
                                                 </div>
                                             </div> 
-                                            <div>
-                                                <Button className='w-100  mt-3' variant="outline-primary">Terminer</Button>
-                                                
-                                            </div>    
+                                              
                                             </Container>                                       
                                         </Dropdown.Menu>
                                 </Dropdown>

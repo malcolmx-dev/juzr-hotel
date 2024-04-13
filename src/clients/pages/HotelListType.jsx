@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Dropdown, Row } from 'react-bootstrap';
 import Sort from '../../components/Sort';
 import Unknown from '../data/unknown.png'
 import Search from '../../components/Search';
 import  useFetch  from '../features/get';
 import { Link, useParams } from 'react-router-dom';
 import Header from '../../components/Header';
+import axios from 'axios';
+import { TbArrowsDownUp } from 'react-icons/tb';
 
 
 
@@ -17,7 +19,13 @@ function HotelListType(){
 
     const hotelParams= useParams()
     const type= hotelParams.type
+    const [dataSort, setDataSort]= useState()
     const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?type=${type}`)
+
+    const handleSort= async(order)=> {
+        const res= await axios.get(`http://localhost:10000/api/hotels/sort/type/${type}/${order}`)
+        setDataSort(res.data)
+    } 
 
    
 
@@ -29,7 +37,16 @@ function HotelListType(){
                 <Container >
                 <Row>
                     <Col  sm={{ span: 4, offset: 5}} >
-                        <Sort />
+                        <Dropdown className=" text-center mb-5">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic" className="bg-white shadow-sm rounded border">
+                            <TbArrowsDownUp/> Sort by: (Filtrez par)
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item  onClick={()=> handleSort("croissant")}>Prix ordre croissant</Dropdown.Item>
+                                <Dropdown.Item  onClick={()=> handleSort("decroissant")}>Prix ordre décroissant</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Col>
                 </Row>
                 </Container>
@@ -78,23 +95,27 @@ function HotelListType(){
                 </Col>
                 
                 <Col sm={{span:4, offset: 2}} xs={{span:12}} >   
-                {data.map((profile, index) => (
-                        
-                        
-                        
-                            
-                            
-                                <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
-                                    <Card.Img variant="top" src={profile.photos[0]} />
-                                    <Card.Body>
-                                        <Card.Title>{profile.name}</Card.Title>
-                                        <Card.Text>{profile.desc}</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            
+                {!dataSort ? data.map((profile, index) => (
+
+                        <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
+                            <Card.Img variant="top" src={profile.photos[0]} />
+                            <Card.Body>
+                                <Card.Title>{profile.name}</Card.Title>
+                                <Card.Text>{profile.desc}</Card.Text>
+                            </Card.Body>
+                        </Card>
+   
+            )): dataSort.map((profile, index) => (
                     
-                            
-                    ))}
+                <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
+                    <Card.Img variant="top" src={profile.photos[0]} />
+                    <Card.Body>
+                        <Card.Title>{profile.name}</Card.Title>
+                        <Card.Text>{profile.desc}</Card.Text>
+                    </Card.Body>
+                </Card>
+            
+    ))}
                     </Col>
                 </Row>
                 

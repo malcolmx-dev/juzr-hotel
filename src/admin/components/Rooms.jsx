@@ -198,9 +198,7 @@ export default function Rooms(){
 
     
     return(
-    loading ?<div class="spinner-border bg-secondary align-middle text-primary" role="status">
-    
-  </div> :
+    loading ?<div class="spinner-border bg-secondary align-middle text-primary" role="status"> </div> :
         <div className="bg-secondary border p-4 shadow-sm w-75  rounded-3 d-flex flex-column">
             <div className="d-flex mb-4"><h3>Chambres</h3> <p className="m-0 mt-1 ms-2 text-primary p-1 bg-white shadow-sm h-75 rounded-pill" onClick={()=> setOpenCreateRoom(true)} style={{fontSize:"14px", cursor:"pointer"}}>+ Ajouter une chambre</p></div>
             {data?.map((room, index)=>
@@ -336,12 +334,12 @@ export default function Rooms(){
                                         <p className="m-0 w-25 fs-5 me-2 fw-bold">Personnes max:</p>
                                         <input className="m-0 fs-5 w-75 text-center rounded-3 mb-3 fw-bold" id="maxPeople" defaultValue={data[index].maxPeople} />                                    
                                     </div>
-                                    <div className="d-flex mt-5">
+                                    <div className="d-flex flex-column mt-5">
                                     {data[index].roomNumbers.map((roomNumber)=>
                                     
                                         
                                     isAvailable(roomNumber) ?
-                                    <div className="rounded p-3 d-flex flex-column justify-content-between align-items-center bg-primary bg-opacity-25 w-75  ms-5 mt-1">
+                                    <div className="rounded p-3 px-5 mb-4 d-flex flex-column justify-content-between align-items-center bg-primary bg-opacity-25 w-75  ms-5 mt-1">
                                      <Dropdown >
                                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
                                             <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>

@@ -10,6 +10,9 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/Header';
 import { DateRange } from 'react-date-range';
 import { format } from 'date-fns';
+import { TbArrowsDownUp } from 'react-icons/tb';
+import axios from 'axios';
+import Search from '../../components/Search';
 
 
 
@@ -22,6 +25,7 @@ function SearchList(){
     const [options, setOptions] = useState(location.state?.options)
     const [min, setMin] = useState(undefined)
     const [max, setMax] = useState(undefined)
+    const [dataSort, setDataSort]= useState()
 
 
 
@@ -39,6 +43,11 @@ function SearchList(){
     };
 
     const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?city=${destination}&min=${min||0}&max=${max||60000}`)
+
+    const handleSort= async(order2)=> {
+        const res= await axios.get(`http://localhost:10000/api/hotels/sort/city/${destination}/${order2}`)
+        setDataSort(res.data)
+    } 
     
     const {dispatch} = useContext(SearchContest)
     
@@ -59,12 +68,21 @@ function SearchList(){
     
     return(
         <div>
-            <Header refreshData={refreshData}/>
+            <Header disabled={true}/>
             <div className='bg-secondary pt-7'>
                 <Container >
                 <Row>
                     <Col  sm={{ span: 4, offset: 5}} >
-                        <Sort />
+                    <Dropdown className=" text-center mb-5">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic" className="bg-white shadow-sm rounded border">
+                            <TbArrowsDownUp/> Sort by: (Filtrez par)
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item  onClick={()=> handleSort("croissant")}>Prix ordre croissant</Dropdown.Item>
+                                <Dropdown.Item  onClick={()=> handleSort("decroissant")}>Prix ordre décroissant</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Col>
                 </Row>
                 </Container>
@@ -110,77 +128,32 @@ function SearchList(){
                 
                 <Col sm={3} className='d-none d-md-block'>
                 <Container className='rounded bg-warning'>
-            <div className='d-flex flex-column p-3'>
-                <h3 className='fw-bold mb-3'>Search</h3>
-                <div className="d-flex flex-column mb-1">
-                   <p className='m-0 fs-6 fw-bold'>Destination</p>
-                   <input type="text" placeholder={destination} className='text-center ' onChange={e=> setDestination(e.target.value)} /> 
-                </div>
-                <div className="d-flex flex-column mb-2">
-                   <p className='m-0 fs-6 fw-bold'>Date d'arrivée</p>
-                   <Dropdown className='bg-white text-center'>
-                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                        {`${format(dates[0].startDate, "dd/MM/yyyy")} à ${format(dates[0].endDate, "dd/MM/yyyy")}`}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        
-                                            <DateRange
-                                                editableDateInputs={true}
-                                                onChange={item => setDates([item.selection])}
-                                                moveRangeOnFirstSelection={true}
-                                                ranges={dates}
-                                                
-                                            />
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                </div>
-                <div className="d-flex flex-column mb-1">
-                   <p className='m-0 mb-3 fs-6 fw-bold'>Options</p>
-                   <div className='d-flex justify-content-between mb-3'>
-                        <p className='m-0 f-6 text-secondary'>Prix min par nuit (en €)</p>
-                        <input type="number" min={0} onChange={e=> setMin(e.target.value)} className='rounded w-25' />
-                   </div>
-                   <div className='d-flex justify-content-between mb-3'>
-                        <p className='m-0 f-6 text-secondary'>Prix max par nuit (en €)</p>
-                        <input type="number" min={0} onChange={e=> setMax(e.target.value)} className='rounded w-25' />
-                   </div>
-                   <div className='d-flex justify-content-between mb-3'>
-                        <p className='m-0 f-6 text-secondary'>Adulte</p>
-                        <input type="number" min={1} className='rounded w-25' placeholder={options.adult} name='adult' onChange={e=> handleChange(e)} />
-                   </div>
-                   <div className='d-flex justify-content-between mb-3'>
-                        <p className='m-0 f-6 text-secondary'>Enfants</p>
-                        <input type="number" min={0} className='rounded w-25' placeholder={options.children} name='children' onChange={e=> handleChange(e)} />
-                   </div>
-                   <div className='d-flex justify-content-between mb-3 '>
-                        <p className='m-0 f-6 text-secondary'>Chambres</p>
-                        <input type="number" min={1} className='rounded w-25' placeholder={options.room} name='room' onChange={e=> handleChange(e)} />
-                   </div>
-                   <Button className='h-100 bg-primary text-center text-white' onClick={()=>handleSearch()}>Search</Button>
-                </div>
-
-            </div>
-        </Container>
+                    <Search/>  
+                </Container>
                 </Col>
                 
                 <Col sm={{span:4, offset: 2}} xs={{span:12}} >   
-                {data.map((profile, index) => (
-                        
-                        
-                        
+                {!dataSort ? data.map((profile, index) => (               
                             
-                            
-                                <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
-                                    <Card.Img variant="top" src={profile.photos[0]} />
-                                    <Card.Body>
-                                        <Card.Title>{profile.name}</Card.Title>
-                                        <Card.Text>{profile.desc}</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            
-                    
-                            
-                    ))}
+                            <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
+                                <Card.Img variant="top" src={profile.photos[0]} />
+                                <Card.Body>
+                                    <Card.Title>{profile.name}</Card.Title>
+                                    <Card.Text>{profile.desc}</Card.Text>
+                                </Card.Body>
+                            </Card>
+           
+                )): dataSort.map((profile, index) => (
+
+                    <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
+                        <Card.Img variant="top" src={profile.photos[0]} />
+                        <Card.Body>
+                            <Card.Title>{profile.name}</Card.Title>
+                            <Card.Text>{profile.desc}</Card.Text>
+                        </Card.Body>
+                    </Card>
+
+                ))}
                     </Col>
                 </Row>
                 

@@ -2,6 +2,7 @@ import { Button, Card, Carousel, Col, Container, Form, Image, Row } from "react-
 import useFetch from "../../clients/features/get";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaCheck } from "react-icons/fa6";
 import { FaArrowTurnUp } from "react-icons/fa6"
 import axios from "axios";
 
@@ -24,7 +25,7 @@ export default function Dashboard(){
     var newPhotosListPhotos = loading? null: data?.photos?.map(element => element)
 
     const [listPhotos, updateListPhotos]=  useState([])
-    const [equipments, setEquipment]=  useState({
+    const [equipments, setEquipment]=  useState([{
         bathroom:[],
         vue:[],
         outside:[],
@@ -37,7 +38,8 @@ export default function Dashboard(){
         health:[],
         internet:false,
         parking:false
-    })
+    }])
+    console.log(data)
 
 
     useEffect(() => {
@@ -45,7 +47,7 @@ export default function Dashboard(){
      }, [loading]);
 
     useEffect(() => {
-        setEquipment(data);
+        !loading && setEquipment(data?.equipments[0]);
         console.log(equipments)
      }, [loading]);
 
@@ -120,7 +122,7 @@ export default function Dashboard(){
                       }).then(response => {
                             if(response.status===401){
                                 alert("Vous n'êtes pas autorisé! Reconnectez-vous")
-                                navigate("/login")
+                                navigate("/admin")
                             }else{
                                 refreshData()
                                 setOpenChangedefaultValue(false)
@@ -175,7 +177,7 @@ export default function Dashboard(){
     }
 
     return(
-        loading ? <p></p> :
+        loading ? <div class="spinner-border bg-secondary align-middle text-primary" role="status"> </div> :
             openChangedefaultValue ?
                 <Card className="bg-secondary shadow-sm w-75 mt-5 p-2 rounded-3 d-flex flex-column">
                     <Card.Title className="fs-2 fw-bold text-primary text-decoration-underline text-center">{data.name}</Card.Title>
@@ -212,7 +214,7 @@ export default function Dashboard(){
                                     <span className="fw-bold fs-5" >Description</span>: <br /><textarea className="border-0 w-100 " id="desc" type="text" defaultValue={data.desc} /> 
                                 </div>
                                 <div className="d-flex">
-                                    <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Image</p>
+                                    <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Images</p>
                                     <p className="m-0 mt-3 ms-2 text-primary p-1 bg-white shadow-sm h-75 rounded-pill" onClick={()=> setOpenCreatePhoto(true)}  style={{fontSize:"14px", cursor:"pointer"}}>+ Ajouter des photos</p>
                                 </div>
                                 {openCreatePhoto&&
@@ -272,9 +274,66 @@ export default function Dashboard(){
                                     )}
                                     
                                 </div>
-                                <div className="d-flex">
-                                    <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Equipements</p>
-                                    <p className="m-0 mt-3 ms-2 text-primary p-1 bg-white shadow-sm h-75 rounded-pill" onClick={()=> setOpenCreateEquipments(true)}  style={{fontSize:"14px", cursor:"pointer"}}>+ Ajouter des équipements</p>
+                                <div className="d-flex flex-column">
+                                    <div className="d-flex">
+                                        <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Equipements</p>
+                                        {!data?.equipments[0]&& <p className="m-0 mt-3 ms-2 text-primary p-1 bg-white shadow-sm h-75 rounded-pill" onClick={()=> setOpenCreateEquipments(true)}  style={{fontSize:"14px", cursor:"pointer"}}>+ Ajouter des équipements</p>}
+                                    </div>
+                                    {data?.equipments[0] && <Row>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Salle de bains</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].bathroom.map((element => element))}  onChange={e => equipmentToSplit(e.target.value, ",", 'bathroom')} />
+                                                                
+                                                                <p className="fw-bold fs-5">Vue</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].vue.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "vue")} />
+
+                                                                <p className="fw-bold fs-5">En extérieur</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].outside.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",","outside")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Équipements en chambre</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].bedroom.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "bedroom")} />
+                                                                
+                                                                
+                                                                
+                                                            </Col>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Activités</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].activities.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "activities")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Réception</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].reception.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "reception")} />
+                                                                
+                                                                <p className="fw-bold fs-5">Restauration</p>
+                                                                <input type="text" defaultValue={ data?.equipments[0].restaurant.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "restaurant")} />
+
+                                                                <p className="fw-bold fs-5">Internet</p>
+                                                                <div className="d-flex">
+                                                                    <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "internet")} />
+                                                                    <label className="form-check-label" for="flexCheckIndeterminate">
+                                                                    Internet
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                                
+                                                            </Col>
+                                                            <Col className="d-flex flex-column">
+                                                                <p className="fw-bold fs-5">Sécurité</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].security.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "security")} />
+                                                                <p className="fw-bold fs-5">Général</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].general.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "general")} />
+                                                                <p className="fw-bold fs-5">Bien-être</p>
+                                                                <input type="text" defaultValue={data?.equipments[0].health.map((element => element))} onChange={e => equipmentToSplit(e.target.value, ",", "health")} />
+                                                                <p className="fw-bold fs-5">Parking</p>
+                                                                <div className="d-flex">
+                                                                    <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "parking")} />
+                                                                    <label className="form-check-label" for="flexCheckIndeterminate">
+                                                                    Parking
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                                
+                                                            </Col>
+                                                        </Row> }
                                 </div>
                                 {openCreateEquipments&&
                                     <div className=" position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center z-2" style={{"backgroundColor":"rgba(0, 0, 0, 0.418)"}}>
@@ -395,10 +454,62 @@ export default function Dashboard(){
                                 </div>
                                 
                                 <p className="fw-bold text-primary text-decoration-underline pt-2 fs-4">Equipements</p>
-                                {data?.equipments ? <div className="d-flex flex-column">
-                                    {data?.equipments.map((images)=>
-                                        <p className="m-0 fw-bold rounded-5 my-2 bg-white p-2 border shadow-sm">{images}</p>
-                                    )}
+                                {data?.equipments[0] ? 
+                                <div className="d-flex flex-column">
+                                    <Row>
+                                        <Col className="d-flex flex-column">
+                                            <p className="fw-bold fs-5">Salle de bains</p>
+                                            {data?.equipments[0].bathroom.map((element => <p className=""><FaCheck />{element}</p>))}
+                                                                
+                                            <p className="fw-bold fs-5">Vue</p>
+                                            {data?.equipments[0].vue.map((element => <p className=""><FaCheck />{element}</p>))}
+
+                                            <p className="fw-bold fs-5">En extérieur</p>
+                                            {data?.equipments[0].outside.map((element => <p className=""><FaCheck />{element}</p>))}
+                                                                
+                                            <p className="fw-bold fs-5">Équipements en chambre</p>
+                                            {data?.equipments[0].bedroom.map((element => <p className=""><FaCheck />{element}</p>))}            
+                                                                
+                                        </Col>
+                                        <Col className="d-flex flex-column">
+                                            <p className="fw-bold fs-5">Activités</p>
+                                            {data?.equipments[0].activities.map((element => <p className=""><FaCheck />{element}</p>))}
+                                                                
+                                            <p className="fw-bold fs-5">Réception</p>
+                                            {data?.equipments[0].reception.map((element => <p className=""><FaCheck />{element}</p>))}
+                                                                
+                                            <p className="fw-bold fs-5">Restauration</p>
+                                            {data?.equipments[0].restaurant.map((element =><p className=""><FaCheck /> {element}</p>))}
+
+                                            <p className="fw-bold fs-5">Internet</p>
+                                                <div className="d-flex">
+                                                    <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "internet")} />
+                                                    <label className="form-check-label" for="flexCheckIndeterminate">
+                                                        Internet
+                                                    </label>
+                                                </div>
+                                                                
+                                                                
+                                        </Col>
+                                        <Col className="d-flex flex-column">
+                                            <p className="fw-bold fs-5">Sécurité</p>
+                                            {data?.equipments[0].security.map((element => <p className=""><FaCheck />{element}</p>))}
+                                            <p className="fw-bold fs-5">Général</p>
+                                            {data?.equipments[0].general.map((element => <p className=""><FaCheck />{element}</p>))}
+                                            <p className="fw-bold fs-5">Bien-être</p>
+                                            {data?.equipments[0].health.map((element => <p className=""><FaCheck />{element}</p>))}
+                                            <p className="fw-bold fs-5">Parking</p>
+                                            <div className="d-flex">
+                                                <input className="form-check-input me-3" type="checkbox" value="" id="flexCheckIndeterminate" onChange={e => setCheckedEquipment(e, "parking")} />
+                                                <label className="form-check-label" for="flexCheckIndeterminate">
+                                                    Parking
+                                                </label>
+                                            </div>    
+                                        </Col>
+                                    </Row>
+
+
+                                    
                                 </div> : <p className="m-0 fw-bold rounded-5 my-2 bg-white p-2 text-center border shadow-sm">Aucun equipements</p>}
                         </Card.Text>
                     </Card.Body>

@@ -7,11 +7,9 @@ import { useContext, useEffect, useState } from "react"
 
 import { Badge, Button, Card, Carousel, Col, Container, Dropdown, Image, Nav, Row } from "react-bootstrap"
 import { AiFillStar, AiOutlineRight } from "react-icons/ai";
-import { GrSwim } from "react-icons/gr";
-import { PiFlowerTulipFill } from "react-icons/pi";
-import { BiRestaurant, BiWifi } from "react-icons/bi";
+import { LuFlower2 } from "react-icons/lu";
 import { FaCalendarAlt, FaParking } from "react-icons/fa";
-import { BsArrowLeftCircle, BsSnow } from "react-icons/bs";
+import { BsArrowLeftCircle } from "react-icons/bs";
 import Header from "../../components/Header"
 import useFetch from "../features/get"
 import { SearchContest } from "../utils/SearchContext";
@@ -19,6 +17,9 @@ import { AuthContest } from "../utils/AuthContext";
 import Reserve from "../../components/Reserve";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
+import { FaBellConcierge, FaCheck, FaDumbbell, FaUmbrellaBeach } from 'react-icons/fa6';
+import { MdBathroom, MdBedroomParent, MdLocalActivity, MdOutlineLock, MdOutlineRestaurantMenu } from 'react-icons/md';
+import { IoInformationCircle } from 'react-icons/io5';
 
 function Hotel() {
     const hotelParams= useParams()
@@ -53,20 +54,21 @@ function Hotel() {
 
     const handleClick= () => {
         if(date[0].startDate-date[0].endDate !==0){
-            dates= date
-        
-        
-            dispatch({type: "NEW_SEARCH", payload: {dates}})
-            console.log(dates)
-            }
-        
-        if(user){
-            setOpenModal(true)
-            console.log(openModal)
-
+            if(user){
+                dates= date
+                dispatch({type: "NEW_SEARCH", payload: {dates}})
+                console.log(dates)
+                setOpenModal(true)
+                console.log(openModal)
+    
+            }else{
+                navigate("/signup")
+            } 
         }else{
-            navigate("/signup")
+            alert("Saisissez vos dates !")
         }
+        
+        
     }
     
     var color="rgba(0, 0, 0, 0.5)"
@@ -294,6 +296,108 @@ function Hotel() {
                             </Col>
                         </Row>
                     </section>
+                    {data?.equipments[0] &&
+                    <section id="equipement">
+                        <Row className="bg-white rounded mt-1">
+                            <Col sm={2} className="bg-secondary d-none d-lg-block ">
+                            
+                            </Col>
+                            <Col className="mt-4 mb-4">
+                                
+                                    <h2 className="text-center ">Equipements</h2>
+                                
+                            </Col>
+                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                                
+                            
+                            </Col>
+                        </Row>
+                        <Row className="bg-white">
+                        <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            
+                            </Col>
+
+                            <Col className="d-flex flex-column">
+                                           { (data?.equipments[0].bathroom[0]===""|| !data?.equipments[0].bathroom[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><MdBathroom /> Salle de bains</p>
+                                                <div>{data?.equipments[0].bathroom.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                              }
+                                            { (data?.equipments[0].vue[0]===""|| !data?.equipments[0].vue[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><FaUmbrellaBeach /> Vue</p>
+                                                <div>{data?.equipments[0].vue.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                              }
+                                            { (data?.equipments[0].outside[0]===""|| !data?.equipments[0].outside[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><LuFlower2 /> En extérieur</p>
+                                                <div>{data?.equipments[0].outside.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                              }                
+                                            { (data?.equipments[0].bedroom[0]===""|| !data?.equipments[0].bedroom[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><MdBedroomParent />Équipements en chambre</p>
+                                                <div>{data?.equipments[0].bedroom.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                              }                      
+                                              
+                                                                
+                                        </Col>
+                                        <Col className="d-flex flex-column">
+                                        { (data?.equipments[0].activities[0]===""|| !data?.equipments[0].activities[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><MdLocalActivity />Activités</p>
+                                                <div>{data?.equipments[0].activities.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+                                        { (data?.equipments[0].reception[0]===""|| !data?.equipments[0].reception[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><FaBellConcierge />Réception</p>
+                                                <div>{data?.equipments[0].reception.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+                                        { (data?.equipments[0].restaurant[0]===""|| !data?.equipments[0].restaurant[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><MdOutlineRestaurantMenu />Restauration</p>
+                                                <div>{data?.equipments[0].restaurant.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+
+                                            <p className="fw-bold text-primary fs-5">{data?.equipments[0].internet && <FaCheck /> + "Internet"}</p>
+                                               
+                                                                
+                                                                
+                                        </Col>
+                                        <Col className="d-flex flex-column">
+                                        { (data?.equipments[0].security[0]===""|| !data?.equipments[0].security[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold  fs-5"><MdOutlineLock /> Sécurité</p>
+                                                <div>{data?.equipments[0].security.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+                                        { (data?.equipments[0].general[0]===""|| !data?.equipments[0].general[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold  fs-5"><IoInformationCircle /> Général</p>
+                                                <div>{data?.equipments[0].general.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+                                        { (data?.equipments[0].health[0]===""|| !data?.equipments[0].health[0]) ? null:
+                                            <div>
+                                                <p className="fw-bold fs-5"><FaDumbbell /> Bien-être</p>
+                                                <div>{data?.equipments[0].health.map((element => <p className=""><FaCheck />{element}</p>))}</div>
+                                            </div>
+                                        }
+
+                                            <p className="fw-bold  fs-5">{data?.equipments[0].parking && <FaCheck /> + "Parking"}</p>
+                                              
+                                        </Col>
+                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            
+                            </Col>
+                        </Row>
+                    </section>}
 
                 </Container>
                 
