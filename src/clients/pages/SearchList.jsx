@@ -28,7 +28,7 @@ function SearchList(){
     const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?city=${destination}&min=${min||0}&max=${max||60000}`)
 
     const handleSort= async(order2)=> {
-        const res= await axios.get(`http://localhost:10000/api/hotels/sort/city/${destination}/${order2}`)
+        const res= await axios.get(`https://juzr-hotel-backend.onrender.com/api/hotels/sort/city/${destination}/${order2}`)
         setDataSort(res.data)
     } 
 

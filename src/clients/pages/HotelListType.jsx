@@ -23,7 +23,7 @@ function HotelListType(){
     const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?type=${type}`)
 
     const handleSort= async(order)=> {
-        const res= await axios.get(`http://localhost:10000/api/hotels/sort/type/${type}/${order}`)
+        const res= await axios.get(`https://juzr-hotel-backend.onrender.com/api/hotels/sort/type/${type}/${order}`)
         setDataSort(res.data)
     } 
 

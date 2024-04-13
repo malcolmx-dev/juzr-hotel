@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 
 import { useContext, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
@@ -107,6 +107,7 @@ export default function Signup() {
                                 </div>
                             
                             </Form>
+                            <p className="fw-bold text-center">Déjà un compte ? <Link to={"/login"}>Se connecter</Link></p>
                         </div>
                         <div className="bg-white d-lg-none rounded-4 mt-5 border">
                             <p className="fs-4 p-2 fw-bold text-center">Inscrivez-vous pour ensuite se connecter !</p>
@@ -153,8 +154,10 @@ export default function Signup() {
                                     
                                     <Button type="submit" className="mt-3 text-white">Confirmer</Button>
                                 </div>
-                            
+                                
                             </Form>
+                            <p className="fw-bold text-center">Déjà un compte ? <Link to={"/login"}>Se connecter</Link></p>
+                            
                         </div>
         
 

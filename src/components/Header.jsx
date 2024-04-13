@@ -126,7 +126,7 @@ function Header(disabled){
                                 
                             <Nav className='basic-navbar-nav'>
                                 
-                                <Link to={'/login'} className='text-black'><VscAccount className='d-md-none'  /></Link>
+                                <Link to={'/signup'} className='text-black'><VscAccount className='d-md-none'  /></Link>
                                 <Nav.Item className='active'>
                                     <Nav.Link as={Link} to={'/signup'} className='d-none d-md-block text-white'><Button variant="outline-white">Sign Up </Button></Nav.Link>
                                 </Nav.Item>

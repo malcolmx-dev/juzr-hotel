@@ -23,7 +23,7 @@ function HotelList(){
     const {data, loading, error}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?island=${island}`)
 
     const handleSort= async(order2)=> {
-        const res= await axios.get(`http://localhost:10000/api/hotels/sort/island/${island}/${order2}`)
+        const res= await axios.get(`https://juzr-hotel-backend.onrender.com/api/hotels/sort/island/${island}/${order2}`)
         setDataSort(res.data)
     } 
 
