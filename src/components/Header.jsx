@@ -44,7 +44,7 @@ function Header(disabled){
     useEffect(() => {
         const fetchData = async () => {
             try{
-              const res= await axios.get(`http://localhost:10000/api/search/hotel/${destination}`)
+              const res= await axios.get(`https://juzr-hotel-backend.onrender.com/api/search/hotel/${destination}`)
               setData2(res.data)  
             }catch(err){
                 console.log(err)
@@ -53,7 +53,7 @@ function Header(disabled){
           fetchData()
       }, [destination])
 
-    const {data, loading, error, refreshData}=useFetch(`http://localhost:10000/api/search/${destination}`)
+    const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/search/${destination}`)
     
     console.log(data2)
 
@@ -295,30 +295,22 @@ function Header(disabled){
                                         {data.map((item) => 
                                         <div className='d-flex mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
                                             <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>
-                                            {item.name ? <div className='d-flex flex-column justify-content-center'>
-                                                
-                                                <p className='fw-bold m-0'>{item.name}</p>
-                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
-                                            </div>: <div className='d-flex flex-column justify-content-center'>
+                                            <div className='d-flex flex-column justify-content-center'>
                                                 
                                                 <p className='fw-bold m-0'>{item.city}</p>
                                                 <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
-                                            </div>}
+                                            </div>
                                         </div>
                                         
                                         )}
                                         {data2[0] && data2.map((item) => 
                                         <div className='d-flex mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
                                             <span className='h-100 m-2 '><MdOutlineHotel className='fs-3' /></span>
-                                            {item.name ? <div className='d-flex flex-column justify-content-center'>
+                                             <div className='d-flex flex-column justify-content-center'>
                                                 
                                                 <p className='fw-bold m-0'>{item.name}</p>
                                                 <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
-                                            </div>: <div className='d-flex flex-column justify-content-center'>
-                                                
-                                                <p className='fw-bold m-0'>{item.city}</p>
-                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
-                                            </div>}
+                                            </div>
                                         </div>
                                         
                                         )}
@@ -327,16 +319,27 @@ function Header(disabled){
                                     </div>
                                     <div className='bg-white d-md-none shadow-lg pb-2 w-50 border border-2 z-2' style={{position: 'absolute', left:"50px", top:"145px"}}>
                                     {data.map((item) => 
-                                    <div className='d-flex pt-2 border mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
-                                        <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>
-                                        <div className='d-flex flex-column justify-content-center'>
-                                            
-                                            <p className='fw-bold m-0'>{item.city}</p>
-                                            <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                        <div className='d-flex pt-2 border mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
+                                            <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>
+                                            <div className='d-flex flex-column justify-content-center'>
+                                                
+                                                <p className='fw-bold m-0'>{item.city}</p>
+                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    )}
+                                        
+                                        )}
+                                    {data2[0] && data2.map((item) => 
+                                        <div className='d-flex pt-2 border mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
+                                            <span className='h-100 m-2 '><MdOutlineHotel className='fs-3' /></span>
+                                             <div className='d-flex flex-column justify-content-center'>
+                                                
+                                                <p className='fw-bold m-0'>{item.name}</p>
+                                                <p className='fw-light m-0' style={{"fontSize": "14px"}}>{item.island}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        )}
                                 </div>
                             </div>
                             : null}
