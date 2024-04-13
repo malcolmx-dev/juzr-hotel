@@ -21,26 +21,9 @@ import Search from '../../components/Search';
 function SearchList(){
     const location = useLocation()
     const [destination, setDestination] = useState(location.state?.destination)
-    const [dates, setDates] = useState(location.state?.dates );
-    const [options, setOptions] = useState(location.state?.options)
     const [min, setMin] = useState(undefined)
     const [max, setMax] = useState(undefined)
     const [dataSort, setDataSort]= useState()
-
-
-
-    console.log(destination)
-
-    
-
-
-      const handleChange = e => {
-        const { name, value } = e.target;
-        setOptions(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
 
     const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels?city=${destination}&min=${min||0}&max=${max||60000}`)
 
@@ -48,16 +31,8 @@ function SearchList(){
         const res= await axios.get(`http://localhost:10000/api/hotels/sort/city/${destination}/${order2}`)
         setDataSort(res.data)
     } 
-    
-    const {dispatch} = useContext(SearchContest)
-    
 
-      const navigate = useNavigate()
-      const handleSearch = () => {
-        dispatch({type: "NEW_SEARCH", payload: {destination, dates, options}})
-          navigate(`/hotels/${destination}`)
-          refreshData()
-      }
+     
 
     const hotelParams= useParams()
     const island= hotelParams.island
