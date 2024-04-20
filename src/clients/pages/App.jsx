@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import Islands from '../../components/Islands';
 import PropertyList from '../../components/PropertyList';
 import Footer from '../../components/Footer';
+import './css/App.css'
 
 
 
@@ -19,7 +20,20 @@ function App() {
     
     <div>
       <Header/>
-      <Carousel className='mt-7 pb-4 px-4'>
+      <Carousel className='mt-7 d-none d-md-block pb-4 px-4'>
+        <Carousel.Item>
+        <Image src={CarouselSlide1} text="First slide" className=' w-100 d-inline-block object-fit-cover' height='700px'  width="100%" />
+          <Carousel.Caption className='d-none d-md-block'>
+          <h3>Réservez dès maintenant</h3>
+            
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item className=''>
+          <Image src={CarouselSlide2} text="First slide" className=' w-100  d-inline-block object-fit-cover' height='700px'  width="100%" />
+
+        </Carousel.Item>
+      </Carousel>
+      <Carousel className='mt-7 d-md-none pb-4 px-4'>
         <Carousel.Item>
         <Image src={CarouselSlide1} text="First slide" className=' w-100 d-inline-block object-fit-cover'  width="100%" />
           <Carousel.Caption className='d-none d-md-block'>

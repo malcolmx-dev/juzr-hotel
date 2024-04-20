@@ -137,7 +137,7 @@ function Header(disabled){
                         </Col>
                     </Navbar>
                     </Row>
-                    {disabled.disabled ? null : <div className='d-none d-md-block'>
+                    {disabled.disabled ? null : <div className='d-none d-lg-block'>
                         <Row className=' d-flex bg-white text-light w-75 mt-4 p-2 text-center align-items-center border border-warning border-3 z-1 position-absolute top-15 start-50 translate-middle-x'>
                             
                             <Col md={3} className='border-end border-warning border-3'>
@@ -200,26 +200,26 @@ function Header(disabled){
                             
                             </Col>
                             <Col md={{ span: 2}} >
-                            <Button className='text-white h-100 w-100' onClick={()=>handleSearch()} >Search</Button>
+                            <Button className='text-white h-100 w-100' onClick={destination==="" ? ()=> alert("Saisissez votre destination !"):()=>handleSearch()} >Search</Button>
                             
                             </Col>
                         </Row>
                     </div>}
                     
                     {openSearch&&!disabled.disabled ?
-                    <div className='d-md-none d-flex justify-content-center mb-7'>
+                    <div className='d-lg-none d-flex justify-content-center mb-7'>
                     <Button className="btn-close border border-black rounded-circle z-2" 
                             style={{position: 'absolute', left:"40px", top:"88px"}} variant='outline-white'
                             onClick={() => setOpenSearch(false)} ></Button>
                             
                         <Row className=' d-flex bg-white text-light mt-4 w-75 p-3 text-center align-items-center border border-warning border-3  position-absolute top-15 '>
-                            <Col md={3} className='border-bottom border-warning border-3'>
+                            <Col lg={3} className='border-bottom border-warning border-3'>
                             <FaBed className='me-1 mb-1'/><input type="text" autocomplete="off" style={{"fontSize": "14px"}} id='destination-md' placeholder='Où voyages-tu ?' onChange={e=>{ handleChange(e)}}  className='text-center shadow-none w-75 border-0 pb-2 outline-primary' />
                             
                             </Col>
-                            <Col md={3} className='border-bottom border-warning border-3' >
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center py-2 px-2'>
+                            <Col lg={3} className=' border-bottom border-warning border-3' >
+                                <Dropdown className=' d-flex justify-content-center'>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center  py-2 px-2'>
                                         <p className='m-0 ' style={{"fontSize": "14px"}}><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(dates[0].startDate, "dd/MM/yyyy")} à ${format(dates[0].endDate, "dd/MM/yyyy")}`}</p>
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu >
@@ -235,8 +235,8 @@ function Header(disabled){
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            <Col md={4} className='border-bottom border-warning border-3' >
-                            <Dropdown>
+                            <Col lg={4} className='border-bottom border-warning border-3' >
+                            <Dropdown className='d-flex justify-content-center'>
                                     <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex px-0 py-2'>
                                         <p className='m-0' style={{"fontSize": "12px"}}><MdMan className='me-1 mb-1' />{`${options.adult} adultes · ${options.children} enfants · ${options.room} chambre`}</p>
                                     </Dropdown.Toggle>
@@ -273,13 +273,13 @@ function Header(disabled){
                                 </Dropdown>
                             
                             </Col>
-                            <Col md={{ span: 2}} >
-                            <Button className='text-white h-100 w-100 mt-3' onClick={()=>handleSearch()} >Search</Button>
+                            <Col lg={{ span: 2}} >
+                            <Button className='text-white h-100 w-100 mt-3' onClick={destination==="" ? ()=> alert("Saisissez votre destination"):()=>handleSearch()} >Search</Button>
                             
                             </Col>
                         </Row>
                     </div>: !disabled.disabled&&
-                    <div className='d-md-none d-flex justify-content-center text-light ms-4 mt-4 w-75 align-items-center position-absolute '>
+                    <div className='d-lg-none d-flex justify-content-center text-light ms-4 mt-4 w-75 align-items-center position-absolute '>
                         <Button className='border border-black mt-1 bg-white rounded-circle' variant='outline-black' onClick={()=> setOpenSearch(true)}> <IoIosArrowDown /> </Button>
                     </div>
 }  
@@ -291,7 +291,7 @@ function Header(disabled){
                 
                             {openDestination && (data ||data2[0]) ? 
                                 <div>
-                                    <div className='d-none d-md-block bg-white shadow-lg py-2 w-25 border border-2 z-2' style={{position: 'absolute', left:"190px", top:"145px"}}>
+                                    <div className='d-none d-lg-block bg-white shadow-lg py-2 w-25 border border-2 z-2' style={{position: 'absolute', left:"190px", top:"145px"}}>
                                         {data.map((item) => 
                                         <div className='d-flex mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
                                             <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>
@@ -317,7 +317,7 @@ function Header(disabled){
                                         
                                         
                                     </div>
-                                    <div className='bg-white d-md-none shadow-lg pb-2 w-50 border border-2 z-2' style={{position: 'absolute', left:"50px", top:"145px"}}>
+                                    <div className='bg-white d-lg-none shadow-lg pb-2 w-50 border border-2 z-2' style={{position: 'absolute', left:"50px", top:"145px"}}>
                                     {data.map((item) => 
                                         <div className='d-flex pt-2 border mb-2' style={{cursor:'pointer'}} onClick={()=> changeValue(item.city)}>
                                             <span className='h-100 m-2 '><IoLocationOutline className='fs-2' /></span>

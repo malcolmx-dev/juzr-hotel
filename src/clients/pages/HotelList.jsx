@@ -100,7 +100,10 @@ function HotelList(){
                                 <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
                                     <Card.Img variant="top" src={profile.photos[0]} />
                                     <Card.Body>
-                                        <Card.Title>{profile.name}</Card.Title>
+                                        <div className='d-flex '>
+                                            <Card.Title className='fw-bold'>{profile.name}</Card.Title>
+                                            <p className='ms-3 px-1 border border-black border-2 rounded fs-6 fw-bold'>{profile.type}</p>
+                                        </div>
                                         <Card.Text>{profile.desc}</Card.Text>
                                     </Card.Body>
                                 </Card>
@@ -110,7 +113,10 @@ function HotelList(){
                         <Card as={Link} to={`/hotel/${profile._id}`} className='mb-5 shadow w button text-decoration-none' key={index}>
                             <Card.Img variant="top" src={profile.photos[0]} />
                             <Card.Body>
-                                <Card.Title>{profile.name}</Card.Title>
+                                <div className='d-flex '>
+                                    <Card.Title className='fw-bold'>{profile.name}</Card.Title>
+                                    <p className='ms-3 px-1 border border-black border-2 rounded fs-6 fw-bold'>{profile.type}</p>
+                                </div>
                                 <Card.Text>{profile.desc}</Card.Text>
                             </Card.Body>
                         </Card>

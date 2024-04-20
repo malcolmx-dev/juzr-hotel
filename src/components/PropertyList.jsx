@@ -41,7 +41,7 @@ export default function PropertyList(){
       </Container> :
         <Container className='my-5 bg-white'>
         
-        <h3 className='text-center'>Choisissez en fonction du type</h3>
+        <h3 className='text-center fw-bold text-primary'>Choisissez en fonction du type</h3>
         <Row className='gy-5 mt-2'>
             {data && image.map((img, i)=> (
                 <Col md={{ span: 4}}>

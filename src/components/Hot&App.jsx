@@ -3,6 +3,7 @@ import Header from "./Header";
 import { CgDanger } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { AiOutlineRight } from "react-icons/ai";
+import "./css/Hot&App.css"
 
 
 

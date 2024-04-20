@@ -44,7 +44,7 @@ function Hotel() {
         return diffDays
     }
     const days =dates ? dayDifference(dates[0]?.endDate, dates[0]?.startDate): undefined
-    console.log(date[0].startDate-date[0].endDate)
+  
     const [openModal, setOpenModal]= useState(false)
     
 
@@ -53,9 +53,11 @@ function Hotel() {
     const {dispatch} = useContext(SearchContest)
 
     const handleClick= () => {
-        if(date[0].startDate-date[0].endDate !==0){
+        if((dates)||((date[0].startDate-date[0].endDate !==0))){
             if(user){
-                dates= date
+                if(date[0].startDate-date[0].endDate !==0){
+                    dates= date
+                }
                 dispatch({type: "NEW_SEARCH", payload: {dates}})
                 console.log(dates)
                 setOpenModal(true)
@@ -243,10 +245,10 @@ function Hotel() {
 
                             </Col>
                             
-                            <Col>
+                            <Col className='d-flex justify-content-center'>
                             {dates ?
                             
-                                <div className="rounded d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75  ms-5  p-3">
+                                <div className="rounded d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75   p-3">
                                     <Dropdown >
                                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
                                             <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
@@ -313,7 +315,7 @@ function Hotel() {
                             </Col>
                         </Row>
                         <Row className="bg-white">
-                        <Col sm={2} className="bg-secondary d-none d-lg-block">
+                        <Col xs={2} className="bg-secondary d-none d-lg-block">
                             
                             </Col>
 
@@ -393,7 +395,7 @@ function Hotel() {
                                             <p className="fw-bold  fs-5">{data?.equipments[0].parking && <FaCheck /> + "Parking"}</p>
                                               
                                         </Col>
-                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            <Col xs={2} className="bg-secondary d-none d-lg-block">
                             
                             </Col>
                         </Row>
