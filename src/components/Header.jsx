@@ -106,8 +106,8 @@ function Header(disabled){
                                 <span className=" bg-white p-1 text-center rounded-3 text-black m-1">Juzr </span> Hotel
                             </Navbar.Brand>
                         </Col>
-                        <Col xs={user ?{ offset: 1}:{offset:5}} md={{ offset: 6}} lg={{ offset: 7}}>
-                            {user ? 
+                        <Col xs={user?.name ?{ offset: 1}:{offset:5}} md={{ offset: 6}} lg={{ offset: 7}}>
+                            {user?.name ? 
                                     <div className='d-flex flex-column'>
                                         <p className='text-black p-1 w-75 d-none d-lg-block shadow border border-3 m-0 mt-1 text-center fw-bold bg-white rounded fs-5' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}><FaRegCircleUser className='mb-1 me-1' /> {user.name} {user.surname}</p>
                                         <p className='text-black p-1 d-lg-none shadow border border-3 m-0 mt-1 text-center fw-bold bg-white rounded fs-6' style={{cursor:'pointer'}} onClick={()=> openUser ?setOpenUser(false):setOpenUser(true)}><FaRegCircleUser className='mb-1 me-1' /> {user.name} {user.surname}</p>

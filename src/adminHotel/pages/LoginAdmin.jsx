@@ -9,6 +9,7 @@ import { useContext, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContest } from "../../clients/utils/AuthContext";
 
 
 
@@ -18,7 +19,6 @@ import axios from "axios";
 export default function LoginAdmin() {
     const [validated, setValidated] = useState(false);
     const [cookie, setCookie]= useCookies()
-    const [error, setError] = useState("")
     const navigate= useNavigate()
     const cookies = new Cookies();
     const [credidentials, setCredidentials] = useState({
@@ -30,13 +30,15 @@ export default function LoginAdmin() {
     const handleChange = (e) => {
       setCredidentials((prev) =>({ ...prev, [e.target.id]: e.target.value }) )
     }
-    
+    const {loading, error, dispatch}= useContext(AuthContest)
+
 
     const handleSubmit = async (event) => {
       console.log(credidentials)
        
     
         event.preventDefault();
+        dispatch({type: "LOGIN_START"})
         
         try{
           const res= await axios({
@@ -54,16 +56,19 @@ export default function LoginAdmin() {
             cookies.set('access_token', res?.data.access_token, { path: '/',  expires});
 
         
-
+            dispatch({type: "LOGIN_SUCCES", payload: res.data})
         if(res.data.hotelId !== null){
             navigate(`/admin/${res.data._id}/${res.data.hotelId}`)
             
+        }
+        if(res.data.isBoss){
+          navigate(`/devAdmin/${res.data._id}`)
         }else{
           navigate(`/admin/${res.data._id}`)}
         
         }catch(err){
-          console.log(err)
-          setError(err.response.data)
+          dispatch({type: "LOGIN_ERROR", payload: err.response.data})
+
         }
         
 

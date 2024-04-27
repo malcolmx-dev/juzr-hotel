@@ -10,8 +10,8 @@ import HotelList from './clients/pages/HotelList';
 import Hotel from './clients/pages/Hotel';
 import Images from './clients/pages/Images';
 import Login from './clients/pages/Login';
-import Admin from './admin/pages/Admin';
-import CreateHotel from './admin/pages/Hotel';
+import Admin from './adminHotel/pages/Admin';
+import CreateHotel from './adminHotel/pages/Hotel';
 import SearchList from './clients/pages/SearchList';
 import { SearchContextProvider} from './clients/utils/SearchContext';
 import { AuthContextProvider } from './clients/utils/AuthContext';
@@ -19,7 +19,8 @@ import LogOut from './clients/pages/LogOut';
 import Signup from './clients/pages/Signup';
 import Hot_App from './components/Hot&App';
 import HotelListType from './clients/pages/HotelListType';
-import LoginAdmin from './admin/pages/LoginAdmin';
+import LoginAdmin from './adminHotel/pages/LoginAdmin';
+import DevAdmin from './devAdmin/pages/Admin';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -47,6 +48,8 @@ root.render(
           <Route exact path='/logout' element={<LogOut/>}/>
           <Route exact path='/admin/:userId' element={<CreateHotel/>}/>
           <Route exact path='/admin/:userId/:hotelId' element={<Admin/>}/>
+          <Route exact path='/devAdmin/:id' element={<DevAdmin/>}/>
+
 
         </Routes>
         

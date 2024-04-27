@@ -32,6 +32,7 @@ $theme-colors: (
   "light": rgba(142, 142, 142, 0.667),
   "warning": #ffc107,
   "danger":#dc3545,
-  "white": #fff
+  "white": #fff,
+  "dark": #000000
 );
 @import "../../../node_modules/bootstrap/scss/bootstrap";

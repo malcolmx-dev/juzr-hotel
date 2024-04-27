@@ -16,6 +16,7 @@ import { SearchContest } from "../utils/SearchContext";
 import { AuthContest } from "../utils/AuthContext";
 import Reserve from "../../components/Reserve";
 import { DateRange } from "react-date-range";
+import axios from "axios"
 import { format } from "date-fns";
 import { FaBellConcierge, FaCheck, FaDumbbell, FaUmbrellaBeach } from 'react-icons/fa6';
 import { MdBathroom, MdBedroomParent, MdLocalActivity, MdOutlineLock, MdOutlineRestaurantMenu } from 'react-icons/md';
@@ -24,6 +25,37 @@ import { IoInformationCircle } from 'react-icons/io5';
 function Hotel() {
     const hotelParams= useParams()
     const hotelId= hotelParams.hotelId
+    const [dataRoom, setDataRoom]= useState()
+    const [fillRoom, setFillRoom]= useState()
+    const [selectedRoom, setSelectedRoom] = useState()
+    const [roomFound, setRoomFound] = useState()
+
+
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+          // Send Axios request here
+            // Send Axios request here
+            const fetchAPI = async() => {
+                try{
+                    await axios({
+                        method: 'put',
+                        url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/cancel/${selectedRoom}`,
+                        data:{
+                            dates:fillRoom
+                        }
+                    })
+                alert("Votre requête est envoyé veuillez patienter un moment")
+                navigate("/")
+      
+              }catch(err){
+                  console.log(error)
+              }}
+              fetchAPI()
+        }, 3000)
+    
+        return () => clearTimeout(delayDebounceFn)
+      }, [fillRoom])
 
 
     const [date, setDates] = useState([
@@ -36,6 +68,12 @@ function Hotel() {
 
     var {dates, options}= useContext(SearchContest)
     const {user}= useContext(AuthContest)
+
+    useEffect(() => {
+        isAllow()
+        setRoomFound(roomFoundList)
+        console.log(roomFound)
+      }, [dataRoom])
     
     const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
     function dayDifference(date1, date2){
@@ -43,7 +81,12 @@ function Hotel() {
         const diffDays= Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
         return diffDays
     }
-    const days =dates ? dayDifference(dates[0]?.endDate, dates[0]?.startDate): undefined
+    function dayDifference2(date1, date2){
+        const timeDiff= Math.abs(date2-date1)
+        const diffDays= Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
+        return diffDays
+    }
+    var days =dates ? dayDifference(dates[0]?.endDate, dates[0]?.startDate): undefined
   
     const [openModal, setOpenModal]= useState(false)
     
@@ -80,6 +123,51 @@ function Hotel() {
     
 
     const {data, loading, error}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/find/${hotelId}`)
+
+    useEffect(() => {
+        async function fetchMyAPI(){
+            const res = await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms`).then((res) => res.json())
+            setDataRoom(res)
+        }
+        fetchMyAPI()
+      }, [loading])
+
+    var roomId= []
+    var roomAvaibility= []
+    var roomsDate= []
+    var roomFoundList= []
+    const isAllow= () => {
+        var isFound
+        
+        dataRoom?.map((room) => 
+            room.roomNumbers.map((roomNumbers) =>
+                roomNumbers.unavailableDates.map((element) => {
+                    isFound= element[1]===user.name+" "+user.surname
+                    if(isFound){
+                        roomAvaibility= element
+                        roomId= roomNumbers._id
+                        roomNumbers.unavailableDates.forEach(element => roomsDate.includes(element) ? null : roomsDate.push(element))
+                        roomFoundList= room
+                        days= element[0].length
+
+                    }
+                    
+            })))
+        
+        return !isFound
+    }
+    const cancelReservation= () => {
+        
+            setSelectedRoom(roomId)
+            const i= roomsDate.indexOf(roomAvaibility)
+            const newroomAvaibilty= roomAvaibility.push(true)
+            const newRoomsDate= roomsDate.splice(i, 1, newroomAvaibilty)
+            setFillRoom(newRoomsDate)
+        
+    }
+    
+        
+      
     
     
 
@@ -88,7 +176,7 @@ function Hotel() {
     return(
         <div>
             <Header/>
-{loading ?<p></p> :   
+{loading || !dataRoom ?<p></p> :   
             <div className="bg-secondary ">
                 <Container className="py-5">
 
@@ -245,54 +333,66 @@ function Hotel() {
 
                             </Col>
                             
-                            <Col className='d-flex justify-content-center'>
-                            {dates ?
-                            
-                                <div className="rounded d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75   p-3">
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
-                                            <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu >
-                                            
-                                                <DateRange
-                                                    editableDateInputs={true}
-                                                    onChange={item => setDates([item.selection])}
-                                                    moveRangeOnFirstSelection={true}
-                                                    ranges={date}
-                                                    
-                                                    
-                                                />
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                    <h4 className='p-3'>Parfait pour un séjour de {days} nuits</h4>
-                                    <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
-                                    <p className="fs-4 px-3 "> <span className="fw-bold ">{days*data.cheapestPrice }€</span>({days} nuits)</p>
-                                    <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()}>Réservez maintenant!</Button>
-                                </div>:
-                                <div className="rounded p-3 d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
-                                            <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu >
-                                            
-                                                <DateRange
-                                                    editableDateInputs={true}
-                                                    onChange={item => setDates([item.selection])}
-                                                    moveRangeOnFirstSelection={true}
-                                                    ranges={date}
-                                                    
-                                                    
-                                                />
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                    <h4 className="p-3 fs-5 ">Parfait pour un séjour de qualité  <span className="fw-bold fs-5 mt-1">· Saisissez vos dates</span></h4>
-                                    <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
-                                    <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()} >Réservez maintenant!</Button>
-                                </div>}
+                            {isAllow() ?
+                                <Col className='d-flex justify-content-center'>
+                                {dates ?
+                                
+                                    <div className="rounded d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75   p-3">
+                                        <Dropdown >
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
+                                                <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu >
+                                                
+                                                    <DateRange
+                                                        editableDateInputs={true}
+                                                        onChange={item => setDates([item.selection])}
+                                                        moveRangeOnFirstSelection={true}
+                                                        ranges={date}
+                                                        
+                                                        
+                                                    />
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                        <h4 className='p-3'>Parfait pour un séjour de {days} nuits</h4>
+                                        <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
+                                        <p className="fs-4 px-3 "> <span className="fw-bold ">{days*data.cheapestPrice }€</span>({days} nuits)</p>
+                                        <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()}>Réservez maintenant!</Button>
+                                    </div>:
+                                    <div className="rounded p-3 d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
+                                        <Dropdown >
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
+                                                <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu >
+                                                
+                                                    <DateRange
+                                                        editableDateInputs={true}
+                                                        onChange={item => setDates([item.selection])}
+                                                        moveRangeOnFirstSelection={true}
+                                                        ranges={date}
+                                                        
+                                                        
+                                                    />
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                        <h4 className="p-3 fs-5 ">Parfait pour un séjour de qualité  <span className="fw-bold fs-5 mt-1">· Saisissez vos dates</span></h4>
+                                        <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
+                                        <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()} >Réservez maintenant!</Button>
+                                    </div>}
 
-                            </Col>
+                                </Col>:
+                                <Col className='d-flex justify-content-center'>
+                                
+                                    <div className={`rounded d-flex flex-column align-items-center justify-content-between bg-danger bg-opacity-25 p-3`}>
+                                        
+                                        <h4 className='p-3 text-center'>Veuillez terminer votre séjour avant d'en renouveler un nouveau</h4>
+                                        <p className="fs-6 mb-2 text-center px-3 m-0">Terminez votre séjour avant d'en redémarrer un nouveau ou bien annulez votre réservation avec votre hotel ci-dessous</p>
+                                        <p className="fs-6 px-3 text-center text-danger fw-bold "> Attention, vous ne pouvez annuler qu'un nombre limité de fois votre séjour au risque d'être banni de notre site</p>
+                                        <Button className=' bg-danger text-center text-white w-75 m-2 ' onClick={()=> !roomAvaibility.includes(true) ? setOpenModal(true):alert('Votre demande est en cours de traitement')}>Annuler la réservation</Button>
+                                    </div>
+    
+                                </Col>}
                             <Col sm={2} className="bg-secondary d-none d-lg-block">
                             
                             </Col>
@@ -404,7 +504,7 @@ function Hotel() {
                 </Container>
                 
             </div>}
-            {openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days}/>}
+            {isAllow() ? openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} />: openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} cancelRoom={roomFound} handleCancel={cancelReservation} />}
         </div>                                               
     )
     

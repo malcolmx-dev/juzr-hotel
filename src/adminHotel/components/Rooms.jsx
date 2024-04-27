@@ -2,11 +2,12 @@ import { useParams } from "react-router-dom"
 import useFetch from "../../clients/features/get"
 import { Button, Card, Col, Container, Dropdown, Row } from "react-bootstrap"
 import { MdBedroomParent } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import axios from "axios";
+import { AuthContest } from "../../clients/utils/AuthContext";
 
 
 
@@ -18,8 +19,11 @@ export default function Rooms(){
     const [openCreateRoom, setOpenCreateRoom] = useState(false)
     const [dupliacte, setDuplicate] = useState(false)
     const [dupliacte2, setDuplicate2] = useState(false)
-    const [roomNumberIndex, setRoomNumberIndex]= useState("")
     const [searchTerm, setSearchTerm] = useState([])
+    const [fillRoom, setFillRoom]= useState()
+
+    const {user}= useContext(AuthContest)
+
        
         const updateSearch = (e, index) => {
             let newState = [...searchTerm];
@@ -36,6 +40,15 @@ export default function Rooms(){
 
     return () => clearTimeout(delayDebounceFn)
   }, [searchTerm])
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      console.log(fillRoom)
+      // Send Axios request here
+    }, 3000)
+
+    return () => clearTimeout(delayDebounceFn)
+  }, [fillRoom])
 
     const [index, setIndex] = useState("")
     const [date, setDates] = useState([
@@ -67,21 +80,23 @@ export default function Rooms(){
     console.log(allDates)
     
     const handleClick = async(roomId) => {
-        try{
-            const res= await axios({
-                method: 'put',
-                url: `http://localhost:10000/api/rooms/availability/${roomId}`,
-                data:{
-                    dates:allDates
-                }
-              })
-                    setOpenChangevalue(false)
-                    refreshData()
-            return res.data
-        }catch(err){
-            console.log(error)
+        setFillRoom([allDates, user.username])
+        if(fillRoom){
+            try{
+                const res= await axios({
+                    method: 'put',
+                    url: `http://localhost:10000/api/rooms/availability/${roomId}`,
+                    data:{
+                        dates:fillRoom
+                    }
+                })
+                        setOpenChangevalue(false)
+                        refreshData()
+                return res.data
+            }catch(err){
+                console.log(error)
+            }
         }
-        
 
     }
     const deleteRoomStatus= async(roomId, dates) => {
@@ -100,14 +115,12 @@ export default function Rooms(){
         }catch(err){
             console.log(error)
         }
-        
-
     }
 
     const isAvailable= (roomNumber) => {
         const isFound=roomNumber.unavailableDates.some((element, index)=>
         
-        element.some((date) => 
+        element[0].some((date) => 
             allDates.includes(new Date(date).getTime())  
             
         )
@@ -193,7 +206,7 @@ export default function Rooms(){
     }
     
     
-
+console.log(new Date().getTime())
     
 
     
@@ -360,8 +373,9 @@ export default function Rooms(){
                                      
                                     <Button className=' bg-primary text-center text-white w-75  m-2 ' onClick={()=> handleClick(roomNumber._id)}  >Réservez!</Button>
                                     { roomNumber.unavailableDates.map((element)=>
-                                    <div className=" text-center mb-4 px-3 m-0 border border-white bg-white mt-5 border-4"> Réservée du <span className="fw-bold">{format(element[0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[element.length-1], 'dd/MM/yyyy')}</span>
-                                     <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Annuler la réservation</Button>
+                                    <div className=" d-flex flex-column text-center mb-4 px-3 m-0 border border-white bg-white mt-5 border-4">
+                                        <p>Réservée du <span className="fw-bold">{format(element[0][0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[0][element[0].length-1], 'dd/MM/yyyy')}</span> par <span className="fw-bold">{element[1]}</span></p>
+                                        {new Date().getTime()>element[0][element[0].length-1] && <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Supprimer</Button>}
                                      </div>
                                     )}
                                 </div>:
@@ -387,9 +401,10 @@ export default function Rooms(){
                                      
                                     <Button className=' bg-primary text-center text-white w-75 mb-5 m-2 ' onClick={()=> handleClick(roomNumber._id)}  >Réservez!</Button>
                                    { roomNumber.unavailableDates.map((element)=>
-                                    <div className=" text-center mb-4 px-3 m-0 border border-white bg-white border-4"> Réservée du <span className="fw-bold">{format(element[0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[element.length-1], 'dd/MM/yyyy')}</span>
-                                     <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Annuler la réservation</Button>
-                                     </div>
+                                    <div className="d-flex flex-column text-center mb-4 px-3 m-0 border border-white bg-white border-4">
+                                        <p>Réservée du <span className="fw-bold">{format(element[0][0], 'dd/MM/yyyy')}</span> au <span className="fw-bold">{format(element[0][element[0].length-1], 'dd/MM/yyyy')} </span> par <span className="fw-bold">{element[1]}</span></p> 
+                                     {new Date().getTime()>element[0][element[0].length-1] && <Button className="rounded bg-danger text-white fw-bold mt-2" onClick={()=>deleteRoomStatus(roomNumber._id, element)} >Supprimer</Button>}
+                                    </div>
                                     )}
                                      
                                     
