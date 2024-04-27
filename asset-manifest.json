@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/juzr-hotel/static/css/main.73ad4cd4.css",
-    "main.js": "/juzr-hotel/static/js/main.76411b09.js",
-    "static/js/787.6f37c163.chunk.js": "/juzr-hotel/static/js/787.6f37c163.chunk.js",
+    "main.css": "/juzr-hotel/static/css/main.71d2f728.css",
+    "main.js": "/juzr-hotel/static/js/main.00bc777d.js",
+    "static/js/453.691d7dce.chunk.js": "/juzr-hotel/static/js/453.691d7dce.chunk.js",
     "static/media/2.jpg": "/juzr-hotel/static/media/2.cbeca3dbf9062957d2ea.jpg",
     "static/media/1.jpg": "/juzr-hotel/static/media/1.49d2c96018382e9d324f.jpg",
     "static/media/anjouan.jpg": "/juzr-hotel/static/media/anjouan.ff407cf8eaa3aba84fa4.jpg",
     "static/media/gr_comore.jpg": "/juzr-hotel/static/media/gr_comore.f108e91e3ae0e453f2bf.jpg",
     "static/media/moheli.jpg": "/juzr-hotel/static/media/moheli.b8fa88b789559c45f5c8.jpg",
     "index.html": "/juzr-hotel/index.html",
-    "main.73ad4cd4.css.map": "/juzr-hotel/static/css/main.73ad4cd4.css.map",
-    "main.76411b09.js.map": "/juzr-hotel/static/js/main.76411b09.js.map",
-    "787.6f37c163.chunk.js.map": "/juzr-hotel/static/js/787.6f37c163.chunk.js.map"
+    "main.71d2f728.css.map": "/juzr-hotel/static/css/main.71d2f728.css.map",
+    "main.00bc777d.js.map": "/juzr-hotel/static/js/main.00bc777d.js.map",
+    "453.691d7dce.chunk.js.map": "/juzr-hotel/static/js/453.691d7dce.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.73ad4cd4.css",
-    "static/js/main.76411b09.js"
+    "static/css/main.71d2f728.css",
+    "static/js/main.00bc777d.js"
   ]
 }
