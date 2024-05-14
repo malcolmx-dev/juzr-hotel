@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './clients/pages/App'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -14,19 +14,33 @@ import Admin from './adminHotel/pages/Admin';
 import CreateHotel from './adminHotel/pages/Hotel';
 import SearchList from './clients/pages/SearchList';
 import { SearchContextProvider} from './clients/utils/SearchContext';
-import { AuthContextProvider } from './clients/utils/AuthContext';
+import { AuthContest, AuthContextProvider } from './clients/utils/AuthContext';
 import LogOut from './clients/pages/LogOut';
 import Signup from './clients/pages/Signup';
 import Hot_App from './components/Hot&App';
 import HotelListType from './clients/pages/HotelListType';
 import LoginAdmin from './adminHotel/pages/LoginAdmin';
 import DevAdmin from './devAdmin/pages/Admin';
+import ErrorAdmin from './adminHotel/pages/ErrorAdmin';
+import EmailVer from './clients/pages/EmailVer';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+function Greeting(props) {
+  const {user}= useContext(AuthContest)
+
+  const isLoggedIn = user.username;
+  const Component= props.Component
+  if (isLoggedIn) {
+    return <Component />;
+  }
+  return <ErrorAdmin />;
+}
 root.render(
 
   <BrowserRouter basename={process.env.REACT_APP_URI}>
+
     
   
   
@@ -45,10 +59,11 @@ root.render(
           <Route exact path='/login' element={<Login/>}/>
           <Route exact path='/admin' element={<LoginAdmin/>}/>
           <Route exact path='/signup' element={<Signup/>}/>
+          <Route exact path='/signup/emailverification' element={<EmailVer/>}/>
           <Route exact path='/logout' element={<LogOut/>}/>
-          <Route exact path='/admin/:userId' element={<CreateHotel/>}/>
-          <Route exact path='/admin/:userId/:hotelId' element={<Admin/>}/>
-          <Route exact path='/devAdmin/:id' element={<DevAdmin/>}/>
+          <Route exact path='/admin/:userId' element={<Greeting Component={CreateHotel}/>}/>
+          <Route exact path='/admin/:userId/:hotelId' element={<Greeting Component={Admin} />}/>
+          <Route exact path='/devAdmin/:id' element={<Greeting Component={DevAdmin}/>}/>
 
 
         </Routes>

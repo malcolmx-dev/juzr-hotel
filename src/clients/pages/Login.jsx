@@ -18,7 +18,6 @@ export default function Login() {
     const [cookie, setCookie]= useCookies()
     const navigate= useNavigate()
     const [credidentials, setCredidentials] = useState({
-      username: undefined,
       password: undefined
     })
 
@@ -26,6 +25,7 @@ export default function Login() {
 
     const handleChange = (e) => {
       setCredidentials((prev) =>({ ...prev, [e.target.id]: e.target.value }) )
+      console.log(credidentials)
     }
     
 
@@ -42,6 +42,7 @@ export default function Login() {
             headers:{'Content-Type': 'application/json'}, 
             data: {
               email: credidentials.email,
+              password: credidentials.password
             }
           })
             let expires = new Date()
@@ -53,6 +54,7 @@ export default function Login() {
           navigate("/")
         }catch(err){
           dispatch({type: "LOGIN_ERROR", payload: err.response.data})
+          console.log(err)
         }
         
 
@@ -80,6 +82,16 @@ export default function Login() {
                                 />
                                 
                                 </Form.Group>
+                                <Form.Group md="4" controlId="password">
+                                  <Form.Label>Mot de passe</Form.Label>
+                                  <Form.Control
+                                      required
+                                      type="password"
+                                      onChange={handleChange}
+                                      placeholder="Mot de passe"
+                                      
+                                  />
+                                </Form.Group>
                                 
                                 
                                 <div className="d-flex flex-column">
@@ -103,6 +115,17 @@ export default function Login() {
                                     
                                 />
                                 
+                                </Form.Group>
+
+                                <Form.Group md="4" controlId="password">
+                                  <Form.Label>Mot de passe</Form.Label>
+                                  <Form.Control
+                                      required
+                                      type="password"
+                                      onChange={handleChange}
+                                      placeholder="Mot de passe"
+                                      
+                                  />
                                 </Form.Group>
                                 
                                 

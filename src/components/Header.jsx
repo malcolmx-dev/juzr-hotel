@@ -55,7 +55,6 @@ function Header(disabled){
 
     const {data, loading, error, refreshData}=useFetch(`https://juzr-hotel-backend.onrender.com/api/search/${destination}`)
     
-    console.log(data2)
 
     
      
@@ -144,11 +143,14 @@ function Header(disabled){
                             <FaBed className='me-1 mb-1'/><input type="text" autocomplete="off" id='destination' placeholder='Où voyages-tu ?' onChange={e=>{ handleChange(e)}} className='text-center shadow-none w-50 border-0 outline-primary' />
                             
                             </Col>
-                            <Col md={3} className='border-end border-warning border-3' >
+                            <Col md={3} className='d-flex justify-content-center border-end border-warning border-3' >
                                 <Dropdown>
-                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                        <FaCalendarAlt className='me-1 mb-1  '  /> {`${format(dates[0].startDate, "dd/MM/yyyy")} à ${format(dates[0].endDate, "dd/MM/yyyy")}`}
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex align-items-center'  >
+                                        <p className='d-none d-xl-block m-0'><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(dates[0].startDate, "dd/MM/yyyy")} à ${format(dates[0].endDate, "dd/MM/yyyy")}`}</p>
+                                        <p className='d-xl-none m-0' style={{fontSize:"11px"}}><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(dates[0].startDate, "dd/MM/yyyy")} à ${format(dates[0].endDate, "dd/MM/yyyy")}`}</p>
                                     </Dropdown.Toggle>
+                                   
+                                    
                                     <Dropdown.Menu>
                                         
                                             <DateRange
@@ -161,12 +163,13 @@ function Header(disabled){
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            <Col md={4} className='border-end border-warning border-3' >
+                            <Col md={4} className='d-flex justify-content-center border-end border-warning border-3' >
                             <Dropdown>
-                                    <Dropdown.Toggle variant="success" >
-                                        <MdMan className='me-1 mb-1' />{`${options.adult} adultes · ${options.children} enfants · ${options.room} chambre`}
-                                    </Dropdown.Toggle>
-                                        <Dropdown.Menu className='w-100 p-3 mt-1 shadow-sm' aria-labelledby='1Y' >
+                                <Dropdown.Toggle variant="success" className='d-flex align-items-center justify-content-center'>
+                                    <p className='d-none d-xl-block m-0'><MdMan className='me-1 mb-1' />{`${options.adult} adultes · ${options.children} enfants · ${options.room} chambre`}</p>
+                                    <p className='d-xl-none m-0' style={{fontSize:"11px"}}><MdMan className='me-1 mb-1' />{`${options.adult} adultes · ${options.children} enfants · ${options.room} chambre`}</p>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className='w-100 p-3 mt-1 shadow-sm'  >
 
                                             <Container className=''>
                                             <div className='d-flex justify-content-between mb-2'>

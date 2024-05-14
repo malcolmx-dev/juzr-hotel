@@ -31,7 +31,6 @@ export default function Signup() {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-      console.log(credidentials)
        
 
         try{
@@ -43,10 +42,11 @@ export default function Signup() {
               email: credidentials.email,
               name: credidentials.name,
               surname: credidentials.surname,
+              password: credidentials.password
             }
           })
 
-          navigate("/login")
+          navigate("/signup/emailverification")
           console.log(res)
         }catch(err){
           console.log(err)
@@ -67,16 +67,28 @@ export default function Signup() {
                             <Form noValidate validated={validated} onSubmit={(e)=>handleSubmit(e)} className="p-3">
         
                                 <Form.Group md="4" controlId="email">
-                                <Form.Label>Adresse e-mail</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    onChange={handleChange}
-                                    placeholder="E-mail"
-                                    
-                                />
-                                
+                                    <Form.Label>Adresse e-mail</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                        onChange={handleChange}
+                                        placeholder="E-mail"
+                                        
+                                    />
                                 </Form.Group>
+
+                                
+                                <Form.Group md="4" controlId="password">
+                                  <Form.Label>Mot de passe</Form.Label>
+                                  <Form.Control
+                                      required
+                                      type="password"
+                                      onChange={handleChange}
+                                      placeholder="Mot de passe"
+                                      
+                                  />
+                                </Form.Group>
+
                                 <Form.Group md="4" controlId="name">
                                 <Form.Label>Prénom</Form.Label>
                                 <Form.Control
@@ -114,15 +126,25 @@ export default function Signup() {
                             <Form noValidate validated={validated} onSubmit={handleSubmit} className="p-3">
         
                                 <Form.Group md="4" controlId="email">
-                                <Form.Label>Adresse e-mail</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    onChange={handleChange}
-                                    placeholder="E-mail"
-                                    
-                                />
-                                
+                                    <Form.Label>Adresse e-mail</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                        onChange={handleChange}
+                                        placeholder="E-mail"
+                                        
+                                    />
+                                </Form.Group>
+
+                                <Form.Group md="4" controlId="password">
+                                  <Form.Label>Mot de passe</Form.Label>
+                                  <Form.Control
+                                      required
+                                      type="text"
+                                      onChange={handleChange}
+                                      placeholder="Mot de passe"
+                                      
+                                  />
                                 </Form.Group>
 
                                 <Form.Group md="4" controlId="name">

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {  Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from 'universal-cookie';
+import axios from "axios"
+
 
 
 export default function HotelForm(){
@@ -25,6 +27,9 @@ export default function HotelForm(){
     })
     const [type, setType]= useState("")
     const [island, setIsland]= useState("")
+    const months= [
+        {month:0},{month:1},{month:2},{month:3},{month:4},{month:5},{month:6},{month:7},{month:8},{month:9},{month:10},{month:11},       
+    ]
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -75,40 +80,51 @@ export default function HotelForm(){
     }
     
     const handleSubmit = async (event) => {
-     
-  
         event.preventDefault();
         event.stopPropagation();
 
-          
         const name= document.getElementById('name').value
         const adress= document.getElementById('adress').value
         const city= document.getElementById('city').value
         const desc= document.getElementById('desc').value
         const cheapestPrice= document.getElementById('cheapestPrice').value
-        var input = document.getElementById('images')
+         
 
         
-  
-        const result= await fetch(`http://localhost:10000/api/hotels/${userId}`, {
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json'
-                },
-            credentials: 'include',
-            body: JSON.stringify({
-                name,
-                type,
-                island,
-                adress,
-                city,
-                desc,
-                cheapestPrice,
-                photos, 
-                equipments
-            }),
-        }).then((res)=>res.json()) 
-        console.log(result)
+        
+        const result= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${userId}`, {
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                    },
+                credentials: 'include',
+                body: JSON.stringify({
+                    name,
+                    type,
+                    island,
+                    adress,
+                    city,
+                    desc,
+                    cheapestPrice,
+                    photos, 
+                    equipments
+                }),
+            }).then((res)=>res.json())
+
+        const result2= axios({
+            method:'post',
+            url: `http://localhost:10000/api/earn`,
+            withCredentials:true,
+            data:{
+                name: name,
+                year: new Date().getFullYear(),
+                months: months
+            }
+
+        })
+            
+        
+        console.log(result2)
         console.log(cookies.get('access_token')); 
 
 

@@ -32,31 +32,7 @@ function Hotel() {
 
 
 
-    useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-          // Send Axios request here
-            // Send Axios request here
-            const fetchAPI = async() => {
-                try{
-                    await axios({
-                        method: 'put',
-                        url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/cancel/${selectedRoom}`,
-                        data:{
-                            dates:fillRoom
-                        }
-                    })
-                alert("Votre requête est envoyé veuillez patienter un moment")
-                navigate("/")
-      
-              }catch(err){
-                  console.log(error)
-              }}
-              fetchAPI()
-        }, 3000)
     
-        return () => clearTimeout(delayDebounceFn)
-      }, [fillRoom])
-
 
     const [date, setDates] = useState([
         {
@@ -72,7 +48,6 @@ function Hotel() {
     useEffect(() => {
         isAllow()
         setRoomFound(roomFoundList)
-        console.log(roomFound)
       }, [dataRoom])
     
     const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
@@ -81,11 +56,7 @@ function Hotel() {
         const diffDays= Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
         return diffDays
     }
-    function dayDifference2(date1, date2){
-        const timeDiff= Math.abs(date2-date1)
-        const diffDays= Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
-        return diffDays
-    }
+    
     var days =dates ? dayDifference(dates[0]?.endDate, dates[0]?.startDate): undefined
   
     const [openModal, setOpenModal]= useState(false)
@@ -134,7 +105,6 @@ function Hotel() {
 
     var roomId= []
     var roomAvaibility= []
-    var roomsDate= []
     var roomFoundList= []
     const isAllow= () => {
         var isFound
@@ -142,29 +112,43 @@ function Hotel() {
         dataRoom?.map((room) => 
             room.roomNumbers.map((roomNumbers) =>
                 roomNumbers.unavailableDates.map((element) => {
-                    isFound= element[1]===user.name+" "+user.surname
-                    if(isFound){
+                    if(element[1]===user.name+" "+user.surname){
+                        isFound= true
                         roomAvaibility= element
                         roomId= roomNumbers._id
-                        roomNumbers.unavailableDates.forEach(element => roomsDate.includes(element) ? null : roomsDate.push(element))
                         roomFoundList= room
                         days= element[0].length
-
                     }
+                   
                     
             })))
         
         return !isFound
     }
-    const cancelReservation= () => {
+    const cancelReservation= async() => {
         
-            setSelectedRoom(roomId)
-            const i= roomsDate.indexOf(roomAvaibility)
-            const newroomAvaibilty= roomAvaibility.push(true)
-            const newRoomsDate= roomsDate.splice(i, 1, newroomAvaibilty)
-            setFillRoom(newRoomsDate)
+        roomAvaibility.push(true)
+        var broomAvaibility= []
+        roomAvaibility.forEach((e) => e!==true && broomAvaibility.push(e))
+           
+            try{
+                await axios({
+                    method: 'put',
+                    url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/cancel/${roomId}`,
+                    data:{
+                        dates:roomAvaibility,
+                        idd: broomAvaibility
+                    }
+                })
+            alert("Votre requête est envoyé veuillez patienter un moment")
+            navigate("/")
+  
+          }catch(err){
+              console.log(error)
+          }}
         
-    }
+    
+    console.log(isAllow())
     
         
       
@@ -196,7 +180,7 @@ function Hotel() {
 
                         <Row className="d-flex justify-content-center bg-white rounded ">
 
-                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            <Col sm={2} className="bg-secondary ">
                             
                             </Col>
 
@@ -213,7 +197,7 @@ function Hotel() {
 
                             </Col>
                             
-                            <Col as={Link} to={`/hotel/${hotelId}/images`} sm={6} lg={2} className="d-flex flex-column p-0   " >
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} sm={8} lg={2} className="d-flex flex-column p-0   " >
 
                             
                             <Carousel className=' d-lg-none'>
@@ -236,7 +220,7 @@ function Hotel() {
 
                             </Col>
 
-                            <Col sm= {2} className="bg-secondary d-none d-lg-block">
+                            <Col sm= {2} className="bg-secondary ">
                             </Col>
 
                         </Row>
@@ -300,7 +284,7 @@ function Hotel() {
                     </section>
                     <section id="reservation">
                         <Row className="bg-white rounded mt-1">
-                            <Col sm={2} className="bg-secondary d-none d-lg-block ">
+                            <Col sm={2} className="bg-secondary">
                             
                             </Col>
                             <Col className="mt-4 mb-4">
@@ -308,20 +292,20 @@ function Hotel() {
                                     <h2 className="text-center ">Réservation</h2>
                                 
                             </Col>
-                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            <Col sm={2} className="bg-secondary">
                                 
                             
                             </Col>
                         </Row>
                         <Row className="bg-white">
-                        <Col sm={2} className="bg-secondary d-none d-lg-block">
+                        <Col sm={2} className="bg-secondary ">
                             
                             </Col>
 
-                            <Col as={Link} to={`/hotel/${hotelId}/images`} lg= {4} className="ps-3 pb-3 ">
+                            <Col as={Link} to={`/hotel/${hotelId}/images`} lg= {4} className="ps-3 pb-3 d-none d-lg-block ">
 
                                 
-                                <Carousel className='d-none d-lg-block'>
+                                <Carousel >
                                     {data?.photos.map((img, index) =>( 
                                         <Carousel.Item key={index}>
                                             <Image src={img} text="First slide" className='rounded pt-1 pe-1' height='335px' width="100%"  />
@@ -337,7 +321,7 @@ function Hotel() {
                                 <Col className='d-flex justify-content-center'>
                                 {dates ?
                                 
-                                    <div className="rounded d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75   p-3">
+                                    <div className="rounded d-flex flex-column align-items-center justify-content-between bg-primary bg-opacity-25 w-75   p-3">
                                         <Dropdown >
                                             <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
                                                 <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
@@ -356,12 +340,12 @@ function Hotel() {
                                         </Dropdown>
                                         <h4 className='p-3'>Parfait pour un séjour de {days} nuits</h4>
                                         <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
-                                        <p className="fs-4 px-3 "> <span className="fw-bold ">{days*data.cheapestPrice }€</span>({days} nuits)</p>
-                                        <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()}>Réservez maintenant!</Button>
+                                        <p className="fs-4 px-3 text-center "> <span className="fw-bold ">{days*data.cheapestPrice }€</span>({days} nuits)</p>
+                                        <Button className=' bg-primary text-center text-white w-75 m-2 ' onClick={()=>handleClick()}>Réservez maintenant!</Button>
                                     </div>:
-                                    <div className="rounded p-3 d-flex flex-column justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
+                                    <div className="rounded px-3 py-1 d-flex flex-column align-items-center justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
                                         <Dropdown >
-                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 '>
                                                 <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu >
@@ -376,9 +360,8 @@ function Hotel() {
                                                     />
                                             </Dropdown.Menu>
                                         </Dropdown>
-                                        <h4 className="p-3 fs-5 ">Parfait pour un séjour de qualité  <span className="fw-bold fs-5 mt-1">· Saisissez vos dates</span></h4>
-                                        <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
-                                        <Button className=' bg-primary text-center text-white w-75 ms-5 m-2 ' onClick={()=>handleClick()} >Réservez maintenant!</Button>
+                                        <h4 className="p-3 fs-5 text-center ">Parfait pour un séjour de qualité  <span className="fw-bold fs-5 mt-1">· Saisissez vos dates</span></h4>
+                                        <Button className=' bg-primary text-center text-white w-75 m-2 ' onClick={()=>handleClick()} >Réservez maintenant!</Button>
                                     </div>}
 
                                 </Col>:
@@ -393,7 +376,7 @@ function Hotel() {
                                     </div>
     
                                 </Col>}
-                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            <Col sm={2} className="bg-secondary">
                             
                             </Col>
                         </Row>
@@ -401,7 +384,7 @@ function Hotel() {
                     {data?.equipments[0] &&
                     <section id="equipement">
                         <Row className="bg-white rounded mt-1">
-                            <Col sm={2} className="bg-secondary d-none d-lg-block ">
+                            <Col sm={2} className="bg-secondary">
                             
                             </Col>
                             <Col className="mt-4 mb-4">
@@ -409,13 +392,13 @@ function Hotel() {
                                     <h2 className="text-center ">Equipements</h2>
                                 
                             </Col>
-                            <Col sm={2} className="bg-secondary d-none d-lg-block">
+                            <Col sm={2} className="bg-secondary ">
                                 
                             
                             </Col>
                         </Row>
                         <Row className="bg-white">
-                        <Col xs={2} className="bg-secondary d-none d-lg-block">
+                        <Col sm={2} className="bg-secondary ">
                             
                             </Col>
 
@@ -495,7 +478,7 @@ function Hotel() {
                                             <p className="fw-bold  fs-5">{data?.equipments[0].parking && <FaCheck /> + "Parking"}</p>
                                               
                                         </Col>
-                            <Col xs={2} className="bg-secondary d-none d-lg-block">
+                            <Col sm={2} className="bg-secondary ">
                             
                             </Col>
                         </Row>
@@ -504,7 +487,7 @@ function Hotel() {
                 </Container>
                 
             </div>}
-            {isAllow() ? openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} />: openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} cancelRoom={roomFound} handleCancel={cancelReservation} />}
+            {isAllow() ? openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} hotel={data.name} />: openModal && <Reserve setOpen={setOpenModal} hotelId={hotelId} days={days} cancelRoom={roomFound} handleCancel={cancelReservation}  />}
         </div>                                               
     )
     

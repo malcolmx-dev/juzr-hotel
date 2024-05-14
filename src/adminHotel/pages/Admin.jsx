@@ -11,7 +11,6 @@ import Reservation from "../components/Reservation";
 
 export default function Admin(){
     const [dashboard, setDasboard] = useState(true)
-    const [user, setUser] = useState(false)
     const [reservation, setReservation] = useState(false)
     const [rooms, setRooms] = useState(false)
     return(

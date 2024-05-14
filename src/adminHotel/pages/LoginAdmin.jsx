@@ -33,10 +33,7 @@ export default function LoginAdmin() {
     const {loading, error, dispatch}= useContext(AuthContest)
 
 
-    const handleSubmit = async (event) => {
-      console.log(credidentials)
-       
-    
+    const handleSubmit = async (event) => {       
         event.preventDefault();
         dispatch({type: "LOGIN_START"})
         
@@ -53,18 +50,19 @@ export default function LoginAdmin() {
           })
             let expires = new Date()
             expires.setTime(expires.getTime() + (3600*1000))
-            cookies.set('access_token', res?.data.access_token, { path: '/',  expires});
+            cookies.set('access_token', res.data.access_token, { path: '/',  expires});
+            
 
         
             dispatch({type: "LOGIN_SUCCES", payload: res.data})
         if(res.data.hotelId !== null){
             navigate(`/admin/${res.data._id}/${res.data.hotelId}`)
             
-        }
+        }else{
+          navigate(`/admin/${res?.data._id}`)}
         if(res.data.isBoss){
           navigate(`/devAdmin/${res.data._id}`)
-        }else{
-          navigate(`/admin/${res.data._id}`)}
+        }
         
         }catch(err){
           dispatch({type: "LOGIN_ERROR", payload: err.response.data})

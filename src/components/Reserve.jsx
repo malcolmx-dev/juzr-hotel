@@ -6,7 +6,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { AuthContest } from "../clients/utils/AuthContext"
 
-export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCancel}){
+export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCancel, hotel}){
 
     const {data, loading, error}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/rooms/${hotelId}`)
     const [selectedRoom, setSelectedRoom] = useState([])
@@ -62,7 +62,7 @@ export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCance
             
         }
     }
-    const handleClick = async() => {
+    const handleReserve = async( price) => {
         setFillRoom([allDates, user.name+" "+user.surname])
         if(fillRoom){
             try{
@@ -76,6 +76,19 @@ export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCance
                             }
                         })
                         return res.data
+                    }),
+                    axios({
+                        method:'put',
+                        url: `https://juzr-hotel-backend.onrender.com/api/earn/increase`,
+                        withCredentials:true,
+                        data:{
+                            name: hotel,
+                            price:price,
+                            date: allDates,
+                            user: user.name+" "+user.surname,
+                            month: new Date().getMonth()
+                        }
+
                     })
                     
                 )
@@ -137,27 +150,29 @@ export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCance
                 <span className="fs-5 m-2">Choisi ta chambre :</span>
                 <div className="d-flex flex-column mx-3 mt-3">
                     {data?.map((item) =>
-                        <div className="d-flex justify-content-between mx-5 mt-2 pb-7 border-bottom">
-                            <div className="d-flex flex-column">
-                                <p className="m-0 fw-bold">{item.title}</p>
-                                <p className="m-0 fw-light">{item.desc}</p>
-                                <p className="m-0 fw-bold" style={{"fontSize": "14px"}}>Personnes max: {item.maxPeople}</p>
-                                <p className="m-0"> <span className="fw-bold">{item.price * days}€</span> pour {days} jours </p>
+                        <div>
+                            <div className="d-flex justify-content-between mx-5 mt-2 pb-7 border-bottom">
+                                <div className="d-flex flex-column">
+                                    <p className="m-0 fw-bold">{item.title}</p>
+                                    <p className="m-0 fw-light">{item.desc}</p>
+                                    <p className="m-0 fw-bold" style={{"fontSize": "14px"}}>Personnes max: {item.maxPeople}</p>
+                                    <p className="m-0"> <span className="fw-bold">{item.price * days}€</span> pour {days} jours </p>
+                                    
+                                </div>
+                                <div className="d-flex">
+                                    {item.roomNumbers.map((roomNumber) => 
+                                        <div className="mx-2 d-flex flex-column">
+                                            <label className="text-light">{roomNumber.number}</label>
+                                            <div className="w-50 h-25" style={{cursor: "pointer"}} onClick={() => handleError(roomNumber)}><input type="checkbox" value={roomNumber._id} disabled={!isAvailable(roomNumber)}   onChange={handleSelect} /></div>
+                                        </div>
+                                    )}
+                                </div>
                                 
                             </div>
-                            <div className="d-flex">
-                                {item.roomNumbers.map((roomNumber) => 
-                                    <div className="mx-2 d-flex flex-column">
-                                        <label className="text-light">{roomNumber.number}</label>
-                                        <div className="w-50 h-25" style={{cursor: "pointer"}} onClick={() => handleError(roomNumber)}><input type="checkbox" value={roomNumber._id} disabled={!isAvailable(roomNumber)}   onChange={handleSelect} /></div>
-                                    </div>
-                                )}
-                            </div>
-                            
+                            <Button onClick={() => handleReserve(item.price * days)} className="bg-primary text-white ms-7 fw-bold text-center w-75 mt-5 py-2">Réservez maintenant !</Button>
                         </div>
                     )}
                 </div>
-                <Button onClick={() => handleClick()} className="bg-primary text-white ms-7 fw-bold text-center w-75 mt-5 py-2">Réservez maintenant !</Button>
 
             </Container>
             <Container  className="bg-white d-md-none w-75 h-75  rounded overflow-auto ">
@@ -165,26 +180,28 @@ export default function Reserve({setOpen, hotelId, days, cancelRoom, handleCance
                 <span className="fs-5 m-2">Choisi ta chambre :</span>
                 <div className="d-flex flex-column mx-3 mt-3">
                     {data?.map((item) =>
-                        <div className="d-flex justify-content-between mt-2 pb-5 border-bottom">
-                            <div className="d-flex flex-column">
-                                <p className="m-0 fw-bold">{item.title}</p>
-                                <p className="m-0 fw-light">{item.desc}</p>
-                                <p className="m-0 fw-bold" style={{"fontSize": "14px"}}>Personnes max: {item.maxPeople}</p>
-                                <p className="m-0"> <span className="fw-bold">{item.price * days}€</span> pour {days} jours </p>
+                        <div>
+                            <div className="d-flex justify-content-between mt-2 pb-5 border-bottom">
+                                <div className="d-flex flex-column">
+                                    <p className="m-0 fw-bold">{item.title}</p>
+                                    <p className="m-0 fw-light">{item.desc}</p>
+                                    <p className="m-0 fw-bold" style={{"fontSize": "14px"}}>Personnes max: {item.maxPeople}</p>
+                                    <p className="m-0"> <span className="fw-bold">{item.price * days}€</span> pour {days} jours </p>
+                                </div>
+                                <div className="d-flex">
+                                    {item.roomNumbers.map((roomNumber) => 
+                                        <div className="mx-2 w-50 d-flex flex-column">
+                                            <label className="text-light">{roomNumber.number}</label>
+                                            <div className="w-50 h-25" style={{cursor: "pointer"}} onClick={() => handleError(roomNumber)}><input type="checkbox" value={roomNumber._id} disabled={!isAvailable(roomNumber)}   onChange={handleSelect} /></div>
+                                        </div>
+                                    )}
+                                </div>
+                                
                             </div>
-                            <div className="d-flex">
-                                {item.roomNumbers.map((roomNumber) => 
-                                    <div className="mx-2 w-50 d-flex flex-column">
-                                        <label className="text-light">{roomNumber.number}</label>
-                                        <div className="w-50 h-25" style={{cursor: "pointer"}} onClick={() => handleError(roomNumber)}><input type="checkbox" value={roomNumber._id} disabled={!isAvailable(roomNumber)}   onChange={handleSelect} /></div>
-                                    </div>
-                                )}
-                            </div>
-                            
+                            <Button onClick={() => handleReserve(item.price * days)} className="bg-primary text-white ms-4 fw-bold text-center w-75 mt-2 py-2">Réservez maintenant !</Button>
                         </div>
                     )}
                 </div>
-                <Button onClick={() => handleClick()} className="bg-primary text-white ms-4 fw-bold text-center w-75 mt-2 py-2">Réservez maintenant !</Button>
 
             </Container>
         </div>

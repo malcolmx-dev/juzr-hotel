@@ -10,6 +10,8 @@ import Dashboard from "../components/Dashboard";
 import Hotel from "../components/Hotel";
 import BlackList from "../components/BlackList";
 import Reservation from "../components/Reservation";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { PiListPlus } from "react-icons/pi";
 
 export default function DevAdmin(){
     const [dashboard, setDasboard] = useState(true)
@@ -19,7 +21,7 @@ export default function DevAdmin(){
     const [reservation, setReservation] = useState(false)
 
     return(
-        <div>
+        <div className="h-100" >
             
             <div className="bg-secondary d-flex h-100 border">
                 <Nav defaultActiveKey="/home" className=" border flex-column ps-2 pe-2 h-100">
@@ -29,10 +31,10 @@ export default function DevAdmin(){
                         
                     
                     <p className="text-light fw-bold m-0 mt-2 ms-1 mb-1">List</p>
-                    <Nav.Link onClick={()=>{setUser(true); setDasboard(false); setHotel(false); setBlackList(false); setReservation(false)}} className="text-light fs-5 "><MdBedroomParent className="mb-1 fs-6 me-1" />Users</Nav.Link>
+                    <Nav.Link onClick={()=>{setUser(true); setDasboard(false); setHotel(false); setBlackList(false); setReservation(false)}} className="text-light fs-5 "><FaRegCircleUser className='mb-1 me-1' />Users</Nav.Link>
                     <Nav.Link onClick={()=>{setHotel(true); setDasboard(false); setUser(false); setBlackList(false); setReservation(false)}} className="text-light fs-5"><MdBedroomParent className="mb-1  fs-6 me-1" />Hotels</Nav.Link>
-                    <Nav.Link onClick={()=>{setBlackList(true); setDasboard(false); setUser(false); setHotel(false); setReservation(false)}} className="text-light fs-5"><MdBedroomParent className="mb-1  fs-6 me-1" />BlackList</Nav.Link>
-                    <Nav.Link onClick={()=>{setReservation(true); setDasboard(false); setUser(false); setBlackList(false); setHotel(false)}} className="text-light fs-5 pb-4 border-bottom"><MdBedroomParent className="mb-1  fs-6 me-1" />Reservation</Nav.Link>
+                    <Nav.Link onClick={()=>{setBlackList(true); setDasboard(false); setUser(false); setHotel(false); setReservation(false)}} className="text-light fs-5"><PiListPlus className="mb-1  me-1" />BlackList</Nav.Link>
+                    <Nav.Link onClick={()=>{setReservation(true); setDasboard(false); setUser(false); setBlackList(false); setHotel(false)}} className="text-light fs-5 pb-4 border-bottom"><FaRegCalendarAlt className="mb-1  fs-6 me-1" />Reservation</Nav.Link>
 
 
 
@@ -43,7 +45,7 @@ export default function DevAdmin(){
 
                 </Nav>
                 {dashboard ? (
-                    <div className="bg-white d-flex border w-100 h-100 justify-content-center">
+                    <div className="bg-white d-flex w-100 h-100 justify-content-center">
                         <Dashboard/>
                     </div>): null}
                 {hotels ? (

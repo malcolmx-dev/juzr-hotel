@@ -60,7 +60,7 @@ return(
         <div className="d-flex flex-column align-items-center justify-content-center  w-100 mt-5">
             
             {data?.map((user)=>
-                <div className="d-flex align-items-center justify-content-between w-25 border fs-5 text-center rounded m-2 shadow-sm">
+                <div className="d-flex align-items-center bg-white justify-content-between w-25 border fs-5 text-center rounded m-2 shadow-sm">
                     <Button className="bg-danger p-1 m-1 fs-6 h-75 border border border-3 text-white" onClick={() => handleDelete(user._id)} ><FaRegTrashCan className="mb-1" /></Button>
                     <p className="p-0 m-0"><FaRegCircleUser className='mb-1 me-1' /> {user.name} {user.surname}</p>
                     <Button className="bg-dark text-white p-1 border border-3 " onClick={() => handleBlackList(user._id)}><PiListPlus /></Button>

@@ -21,7 +21,7 @@ export default function PropertyList(){
         <h3 className='text-center'>Choisissez en fonction du type</h3>
         <Row className='gy-5 mt-2'>
             {image.map((img, i)=> (
-                <Col md={{ span: 3}}>
+                <Col md={{ span: 4}}>
                     <Card as={Link} to={"/"} className="border-none" >
                     <Card.Img src={img} className='object-fit-cover' height="200px" width="100%"/>
                     

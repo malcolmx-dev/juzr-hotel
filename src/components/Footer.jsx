@@ -11,19 +11,7 @@ export default function Footer() {
                         <h6 className="text-uppercase font-weight-bold">
                         <a href="#!" className="text-black">About us</a>
                         </h6>
-                    </div>
-
-                    <div className="col-md-2">
-                        <h6 className="text-uppercase font-weight-bold">
-                        <a href="#!" className="text-black">Products</a>
-                        </h6>
-                    </div>
-
-                    <div className="col-md-2">
-                        <h6 className="text-uppercase font-weight-bold">
-                        <a href="#!" className="text-black">Awards</a>
-                        </h6>
-                    </div>
+                    </div>    
 
                     <div className="col-md-2">
                         <h6 className="text-uppercase font-weight-bold">
