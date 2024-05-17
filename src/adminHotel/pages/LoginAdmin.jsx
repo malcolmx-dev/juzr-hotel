@@ -51,6 +51,7 @@ export default function LoginAdmin() {
             let expires = new Date()
             expires.setTime(expires.getTime() + (3600*1000))
             cookies.set('access_token', res.data.access_token, { path: '/',  expires});
+            console.log(res.data.access_token)
             
 
         

@@ -106,7 +106,7 @@ export default function Dashboard(){
         
         
 
-        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},
@@ -133,7 +133,7 @@ export default function Dashboard(){
       
     }
     const handlePhoto= async() => {
-        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},
@@ -155,7 +155,7 @@ export default function Dashboard(){
     }
     const handleEquipments= async() => {
         console.log(equipments)
-        const res= await fetch(`http://localhost:10000/api/hotels/${hotelId}`,{
+        const res= await fetch(`https://juzr-hotel-backend.onrender.com/api/hotels/${hotelId}`,{
                     method:'PUT',
                     credentials:'include',
                     headers:{'Content-Type':'application/json'},

@@ -10,14 +10,14 @@ import { format } from "date-fns"
 export default function Reservation(){
     const [dataHotel, setDataHotel]= useState()
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/rooms`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/rooms`)
     useEffect(() => {
 
         const fetchAPI = async() => {
             try{
                 const res= await axios({
                     method: 'get',
-                    url: `http://localhost:10000/api/hotels`,
+                    url: `https://juzr-hotel-backend.onrender.com/api/hotels`,
                 })
                 setDataHotel(res.data)
                 
@@ -35,14 +35,14 @@ export default function Reservation(){
             const res= await axios({
                         method: 'delete',
                         withCredentials:true,
-                        url: `http://localhost:10000/api/rooms/availability/delete/${roomId}`,
+                        url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/delete/${roomId}`,
                         data:{
                             dates:dates
                         }
                       })
             const res2= axios({
                 method:'put',
-                url: `http://localhost:10000/api/earn/decrease`,
+                url: `https://juzr-hotel-backend.onrender.com/api/earn/decrease`,
                 withCredentials:true,
                 data:{
                     name: hotel,

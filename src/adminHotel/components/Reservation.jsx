@@ -33,7 +33,7 @@ export default function Reservation(){
     return () => clearTimeout(delayDebounceFn)
   }, [dataRoom])
 
-  const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/hotels/rooms/${hotelId}`)
+  const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels/rooms/${hotelId}`)
 
   const [date, setDates] = useState([
     {
@@ -90,7 +90,7 @@ const allDates= getDateInRange(date[0].startDate, date[0].endDate)
         try{
             const res= await axios({
                 method: 'put',
-                url: `http://localhost:10000/api/rooms/availability/${roomId}`,
+                url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/${roomId}`,
                 data:{
                     dates:fillRoom
                 }
@@ -109,7 +109,7 @@ const deleteRoomStatus= async(roomId, dates) => {
         const res= await axios({
                     method: 'delete',
                     withCredentials:true,
-                    url: `http://localhost:10000/api/rooms/availability/delete/${roomId}`,
+                    url: `https://juzr-hotel-backend.onrender.com/api/rooms/availability/delete/${roomId}`,
                     data:{
                         dates:dates
                     }
@@ -134,7 +134,7 @@ const handleSearch= async(roomId) => {
 
   const res= await axios({
       method: 'put',
-      url: `http://localhost:10000/api/rooms/${roomId}`,
+      url: `https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}`,
       headers:{'Content-Type': 'application/json'}, 
       data: {
               title: title,
@@ -151,7 +151,7 @@ const handleSearch= async(roomId) => {
 const handleDelete= async(roomId) => {
 
   
-    await fetch(`http://localhost:10000/api/rooms/${roomId}/${hotelId}`,{
+    await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}/${hotelId}`,{
       method:'DELETE',
       credentials:'include',
       headers:{'Content-Type':'application/json'},
@@ -170,7 +170,7 @@ const handleDelete= async(roomId) => {
 }
 
   const handleRoom = async(roomId) => {
-    const res = await fetch(`http://localhost:10000/api/rooms/${roomId}`).then((res) => res.json())
+    const res = await fetch(`https://juzr-hotel-backend.onrender.com/api/rooms/${roomId}`).then((res) => res.json())
     setOpenValue(true)
     setDataRoom(res)
   }

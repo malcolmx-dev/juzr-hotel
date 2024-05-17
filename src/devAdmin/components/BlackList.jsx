@@ -11,7 +11,7 @@ export default function BlackList(){
     const navigate= useNavigate()
 
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/user?blackList=${true}`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/user?blackList=${true}`)
 
     if(error?.response?.status===401){
         alert(error.response.statusText)
@@ -24,7 +24,7 @@ export default function BlackList(){
         try{
             const res= axios({
                 method:'put',
-                url: `http://localhost:10000/api/user/${id}`,
+                url: `https://juzr-hotel-backend.onrender.com/api/user/${id}`,
                 withCredentials: true,
                 data:{
                     blackList:false

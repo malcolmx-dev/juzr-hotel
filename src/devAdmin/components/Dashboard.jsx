@@ -26,7 +26,7 @@ export default function Dashboard(){
 
     const navigate= useNavigate()
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/earn`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/earn`)
 
     if(error?.response?.status===401){
         alert(error.response.statusText)

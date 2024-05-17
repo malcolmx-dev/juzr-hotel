@@ -11,7 +11,7 @@ export default function User(){
     const navigate= useNavigate()
 
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/user`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/user`)
 
     if(error?.response?.status===401){
         alert(error.response.statusText)
@@ -25,7 +25,7 @@ export default function User(){
         try{
             const res= axios({
                 method:'delete',
-                url: `http://localhost:10000/api/user/${id}`,
+                url: `https://juzr-hotel-backend.onrender.com/api/user/${id}`,
                 withCredentials: true,
 
             })
@@ -39,7 +39,7 @@ export default function User(){
         try{
             const res= axios({
                 method:'put',
-                url: `http://localhost:10000/api/user/${id}`,
+                url: `https://juzr-hotel-backend.onrender.com/api/user/${id}`,
                 withCredentials: true,
                 data:{
                     blackList:true

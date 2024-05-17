@@ -11,7 +11,7 @@ export default function Hotel(){
 
 
 
-    const {data, loading, error, refreshData}= useFetch(`http://localhost:10000/api/hotels`)
+    const {data, loading, error, refreshData}= useFetch(`https://juzr-hotel-backend.onrender.com/api/hotels`)
 
 
 
@@ -22,7 +22,7 @@ export default function Hotel(){
         try{
             const res= axios({
                 method:'delete',
-                url: `http://localhost:10000/api/hotels/${id}`,
+                url: `https://juzr-hotel-backend.onrender.com/api/hotels/${id}`,
                 withCredentials: true,
 
             })

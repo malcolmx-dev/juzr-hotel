@@ -26,8 +26,6 @@ function Hotel() {
     const hotelParams= useParams()
     const hotelId= hotelParams.hotelId
     const [dataRoom, setDataRoom]= useState()
-    const [fillRoom, setFillRoom]= useState()
-    const [selectedRoom, setSelectedRoom] = useState()
     const [roomFound, setRoomFound] = useState()
 
 
@@ -148,7 +146,6 @@ function Hotel() {
           }}
         
     
-    console.log(isAllow())
     
         
       
@@ -209,11 +206,11 @@ function Hotel() {
                                     
 
                                 </Carousel>
-                            <img src={data?.photos[4]} alt="" className="object-fit-cover ms-1 my-1 h-100 d-none d-lg-block " height="175px" width="100%"/>
+                            <img src={data?.photos[4]} alt="" className="object-fit-cover ms-1 my-1  d-none d-lg-block " height="175px" width="100%"/>
                             
-                            <Card  className="bg-dark text-white rounded-0 d-none d-lg-block" >
-                                <Card.Img src={data?.photos[2]} className="object-fit-cover ms-1 rounded-0 " height="175px" width="100%" />
-                                <Card.ImgOverlay className="d-flex align-items-center w-100 h-100 rounded-0 ms-1" style={{backgroundColor: `${color}`}}>
+                            <Card  className="border text-white rounded-0 d-none d-lg-block" width="100%" >
+                                <Card.Img src={data?.photos[2]} className="object-fit-cover  rounded-0 " height="175px" width="100%" />
+                                <Card.ImgOverlay className="d-flex align-items-center w-100  rounded-0 ms-1" style={{backgroundColor: `${color}`}}>
                                 <Card.Title className='text-center'>Afficher toutes les photos</Card.Title>
                                 </Card.ImgOverlay>
                             </Card>
@@ -317,7 +314,55 @@ function Hotel() {
 
                             </Col>
                             
-                            {isAllow() ?
+                            {!user.name ? 
+                                <Col className='d-flex justify-content-center'>
+                                {dates ?
+                                
+                                    <div className="rounded d-flex flex-column align-items-center justify-content-between bg-primary bg-opacity-25 w-75   p-3">
+                                        <Dropdown >
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 w-100 py-2 px-2'>
+                                                <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu >
+                                                
+                                                    <DateRange
+                                                        editableDateInputs={true}
+                                                        onChange={item => setDates([item.selection])}
+                                                        moveRangeOnFirstSelection={true}
+                                                        ranges={date}
+                                                        
+                                                        
+                                                    />
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                        <h4 className='p-3'>Parfait pour un séjour de {days} nuits</h4>
+                                        <p className="fs-6 mb-2 px-3 m-0">Localisée près de la foret de Wala, où on retrouve les plus belles plages de la région</p>
+                                        <p className="fs-4 px-3 text-center "> <span className="fw-bold ">{days*data.cheapestPrice }€</span>({days} nuits)</p>
+                                        <Button className=' bg-primary text-center text-white w-75 m-2 ' onClick={()=>handleClick()}>Réservez maintenant!</Button>
+                                    </div>:
+                                    <div className="rounded px-3 py-1 d-flex flex-column align-items-center justify-content-between bg-primary bg-opacity-25 w-75  ms-5 mt-1">
+                                        <Dropdown >
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='d-flex justify-content-center bg-white border border-warning border-3 '>
+                                                <p className='m-0 ' ><FaCalendarAlt className='me-1 mb-1  '  /> {`${format(date[0].startDate, "dd/MM/yyyy")} à ${format(date[0].endDate, "dd/MM/yyyy")}`}</p>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu >
+                                                
+                                                    <DateRange
+                                                        editableDateInputs={true}
+                                                        onChange={item => setDates([item.selection])}
+                                                        moveRangeOnFirstSelection={true}
+                                                        ranges={date}
+                                                        
+                                                        
+                                                    />
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                        <h4 className="p-3 fs-5 text-center ">Parfait pour un séjour de qualité  <span className="fw-bold fs-5 mt-1">· Saisissez vos dates</span></h4>
+                                        <Button className=' bg-primary text-center text-white w-75 m-2 ' onClick={()=>handleClick()} >Réservez maintenant!</Button>
+                                    </div>}
+
+                                </Col>:
+                                isAllow() ?
                                 <Col className='d-flex justify-content-center'>
                                 {dates ?
                                 
