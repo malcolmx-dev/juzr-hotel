@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/juzr-hotel/static/css/main.71d2f728.css",
-    "main.js": "/juzr-hotel/static/js/main.f199772c.js",
+    "main.js": "/juzr-hotel/static/js/main.3ac2c498.js",
     "static/js/453.691d7dce.chunk.js": "/juzr-hotel/static/js/453.691d7dce.chunk.js",
     "static/media/2.jpg": "/juzr-hotel/static/media/2.cbeca3dbf9062957d2ea.jpg",
     "static/media/1.jpg": "/juzr-hotel/static/media/1.49d2c96018382e9d324f.jpg",
@@ -10,11 +10,11 @@
     "static/media/moheli.jpg": "/juzr-hotel/static/media/moheli.b8fa88b789559c45f5c8.jpg",
     "index.html": "/juzr-hotel/index.html",
     "main.71d2f728.css.map": "/juzr-hotel/static/css/main.71d2f728.css.map",
-    "main.f199772c.js.map": "/juzr-hotel/static/js/main.f199772c.js.map",
+    "main.3ac2c498.js.map": "/juzr-hotel/static/js/main.3ac2c498.js.map",
     "453.691d7dce.chunk.js.map": "/juzr-hotel/static/js/453.691d7dce.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.71d2f728.css",
-    "static/js/main.f199772c.js"
+    "static/js/main.3ac2c498.js"
   ]
 }
