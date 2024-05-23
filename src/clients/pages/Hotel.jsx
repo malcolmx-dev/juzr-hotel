@@ -110,7 +110,7 @@ function Hotel() {
         dataRoom?.map((room) => 
             room.roomNumbers.map((roomNumbers) =>
                 roomNumbers.unavailableDates.map((element) => {
-                    if(element[1]===user.name+" "+user.surname){
+                    if(element[1]===user?.name+" "+user?.surname){
                         isFound= true
                         roomAvaibility= element
                         roomId= roomNumbers._id
@@ -314,7 +314,7 @@ function Hotel() {
 
                             </Col>
                             
-                            {!user.name ? 
+                            {!user?.name ? 
                                 <Col className='d-flex justify-content-center'>
                                 {dates ?
                                 
